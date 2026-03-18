@@ -23,6 +23,8 @@ export function renderTrackPage(trackId) {
           </div>
         </div>
 
+        ${renderLectureDeck(track)}
+
         <section class="module-card sheet-menu-panel">
           <div class="card-topline">
             <span class="status-pill">Prompt packs</span>
@@ -44,7 +46,6 @@ export function renderTrackPage(trackId) {
               .join('')}
           </div>
         </section>
-        ${renderLectureDeck(track)}
       </div>
     </section>
   `;
