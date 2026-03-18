@@ -1205,9 +1205,6 @@ textarea {
     grid-template-columns: 1fr;
   }
 
-  .sheet-button-grid {
-    grid-template-columns: 1fr;
-  }
 }
 
 @media (max-width: 767px) {
@@ -1419,6 +1416,33 @@ textarea {
   .sheet-nav-button {
     padding: 0.95rem;
     border-radius: 18px;
+  }
+
+  .sheet-menu-panel {
+    overflow: hidden;
+  }
+
+  .sheet-button-grid {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(260px, 86%);
+    grid-template-columns: none;
+    gap: 0.8rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0.1rem 0.1rem 0.45rem;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .sheet-button-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .sheet-nav-button {
+    scroll-snap-align: start;
+    min-height: 100%;
   }
 
   .sheet-menu-link {
