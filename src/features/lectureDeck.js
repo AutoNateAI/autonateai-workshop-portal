@@ -48,7 +48,9 @@ export function initLectureDeck() {
       return;
     }
 
+    audio.src = '';
     audio.src = src;
+    audio.load();
     audio.play().catch(() => {});
   }
 
@@ -103,4 +105,10 @@ export function initLectureDeck() {
   });
 
   updateToggle();
+
+  if (voiceEnabled) {
+    window.setTimeout(() => {
+      playCurrent(currentIndex);
+    }, 120);
+  }
 }
