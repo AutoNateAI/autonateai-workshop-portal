@@ -79,7 +79,7 @@
           </div>
         </div>
 
-        <div class="stat-row stat-row--compact">
+        <div class="stat-row stat-row--compact home-stat-row">
           <div class="stat-panel">
             <div class="stat-heading">2</div>
             <div class="stat-caption">Tracks unlocked</div>
