@@ -396,6 +396,65 @@ textarea {
   padding: 0.35rem 0.55rem;
 }
 
+.sheet-menu-panel {
+  margin-bottom: 1rem;
+}
+
+.sheet-button-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.sheet-nav-button {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 0.9rem 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  transition:
+    border-color 160ms ease,
+    transform 160ms ease,
+    background 160ms ease;
+}
+
+.sheet-nav-button:hover {
+  border-color: rgba(239, 131, 84, 0.35);
+  background: rgba(239, 131, 84, 0.08);
+  transform: translateY(-1px);
+}
+
+.sheet-nav-number {
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  color: #1f120c;
+  background: linear-gradient(135deg, var(--accent), #f7b267);
+}
+
+.sheet-nav-copy {
+  min-width: 0;
+  display: grid;
+  gap: 0.15rem;
+}
+
+.sheet-nav-copy strong {
+  font-size: 0.98rem;
+}
+
+.sheet-nav-copy span {
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
 .sheet-menu summary,
 .map-details summary {
   list-style: none;
@@ -775,6 +834,10 @@ textarea {
   }
 
   .track-utility-row {
+    grid-template-columns: 1fr;
+  }
+
+  .sheet-button-grid {
     grid-template-columns: 1fr;
   }
 }
