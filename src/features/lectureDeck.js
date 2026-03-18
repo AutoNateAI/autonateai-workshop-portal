@@ -31,6 +31,49 @@ export function initLectureDeck() {
     slides[0]?.classList.add('is-active');
   }
 
+  function getClosestVisualIndex(carousel) {
+    const cards = [...carousel.children];
+    if (!cards.length) {
+      return 0;
+    }
+    const width = carousel.clientWidth || 1;
+    return Math.max(0, Math.min(cards.length - 1, Math.round(carousel.scrollLeft / width)));
+  }
+
+  function updateVisualDots(slide, index) {
+    slide.querySelectorAll('[data-visual-dot]').forEach((dot) => {
+      dot.classList.toggle('is-active', Number(dot.dataset.visualDot) === index);
+    });
+  }
+
+  function initVisualCarousel(slide) {
+    const carousel = slide.querySelector('[data-visual-carousel]');
+    if (!carousel) {
+      return;
+    }
+
+    slide.querySelectorAll('[data-visual-dot]').forEach((dot) => {
+      dot.addEventListener('click', () => {
+        const index = Number(dot.dataset.visualDot);
+        carousel.scrollTo({
+          left: index * carousel.clientWidth,
+          behavior: 'smooth',
+        });
+        updateVisualDots(slide, index);
+      });
+    });
+
+    let timer = 0;
+    carousel.addEventListener('scroll', () => {
+      window.clearTimeout(timer);
+      timer = window.setTimeout(() => {
+        updateVisualDots(slide, getClosestVisualIndex(carousel));
+      }, 60);
+    });
+  }
+
+  slides.forEach((slide) => initVisualCarousel(slide));
+
   function updateToggle() {
     if (!toggle) {
       return;
@@ -73,6 +116,13 @@ export function initLectureDeck() {
       translateX: [18, 0],
       duration: 450,
       ease: 'outQuad',
+    });
+
+    deck.scrollTop = 0;
+    slides[index].scrollTop = 0;
+    deck.closest('.lecture-card')?.scrollIntoView({
+      block: 'start',
+      behavior: 'smooth',
     });
 
     playCurrent(index);

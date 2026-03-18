@@ -1,3 +1,5 @@
+import {getSlideNarration} from '../lib/voiceoverText.js';
+
 function renderGraphVisual(visual) {
   return `
     <section class="slide-visual-card">
@@ -95,6 +97,42 @@ function renderActivity(activity) {
   `;
 }
 
+function renderVisualRegion(visuals = []) {
+  if (!visuals.length) {
+    return '';
+  }
+
+  return `
+    <div class="slide-visual-region">
+      <div class="slide-visual-topline">
+        <span class="slide-visual-hint">${visuals.length > 1 ? 'Swipe visuals' : 'Slide visual'}</span>
+        ${
+          visuals.length > 1
+            ? `<div class="slide-visual-dots" role="tablist" aria-label="Slide visuals">
+                ${visuals
+                  .map(
+                    (_, index) => `
+                      <button
+                        class="slide-visual-dot${index === 0 ? ' is-active' : ''}"
+                        type="button"
+                        data-visual-dot="${index}"
+                        aria-label="Go to visual ${index + 1}"
+                      ></button>`,
+                  )
+                  .join('')}
+              </div>`
+            : ''
+        }
+      </div>
+      <div class="slide-visual-grid${visuals.length > 1 ? ' is-carousel' : ''}" ${
+        visuals.length > 1 ? 'data-visual-carousel' : ''
+      }>
+        ${visuals.map((visual) => renderVisual(visual)).join('')}
+      </div>
+    </div>
+  `;
+}
+
 export function renderLectureDeck(track) {
   return `
     <section class="module-card lecture-card">
@@ -116,6 +154,7 @@ export function renderLectureDeck(track) {
           .map(
             (slide, index) => `
               <article class="lecture-slide ${index === 0 ? 'is-active' : ''}" data-slide-index="${index}">
+                ${renderVisualRegion(slide.visuals)}
                 <div class="lecture-copy">
                   <div class="slide-index">0${index + 1}</div>
                   <div class="slide-eyebrow">${slide.eyebrow || 'Lecture'}</div>
@@ -135,9 +174,6 @@ export function renderLectureDeck(track) {
                     <div class="slide-transcript-copy">${getSlideNarration(track, slide, index)}</div>
                   </details>
                 </div>
-                <div class="slide-visual-grid">
-                  ${(slide.visuals || []).map((visual) => renderVisual(visual)).join('')}
-                </div>
               </article>`,
           )
           .join('')}
@@ -149,4 +185,3 @@ export function renderLectureDeck(track) {
     </section>
   `;
 }
-import {getSlideNarration} from '../lib/voiceoverText.js';
