@@ -173,7 +173,6 @@ textarea {
 .hero-copy-wrap {
   display: grid;
   gap: 0.55rem;
-  padding-bottom: 0.35rem;
 }
 
 .hero-actions-grid {
@@ -181,6 +180,7 @@ textarea {
   grid-auto-flow: column;
   grid-auto-columns: minmax(180px, 1fr);
   gap: 0.8rem;
+  margin-top: 0.85rem;
   overflow-x: auto;
   padding-bottom: 0.25rem;
   scrollbar-width: none;
