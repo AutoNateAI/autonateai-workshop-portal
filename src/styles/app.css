@@ -359,16 +359,19 @@ textarea {
 
 .lecture-card {
   min-height: 65vh;
+  max-height: 65vh;
   display: grid;
   grid-template-rows: auto auto minmax(0, 1fr) auto;
   align-items: start;
   padding: 1rem 1.05rem;
   margin-bottom: 0.35rem;
+  overflow: hidden;
 }
 
 .lecture-deck {
   min-height: 0;
   display: grid;
+  overflow: hidden;
 }
 
 .lecture-slide {
@@ -378,6 +381,9 @@ textarea {
   gap: 0.9rem;
   align-items: start;
   overflow: auto;
+  padding-bottom: 1rem;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 }
 
 .lecture-slide.is-active {
@@ -1184,6 +1190,7 @@ textarea {
 
   .lecture-card {
     min-height: 82vh;
+    max-height: 82vh;
     padding: 1rem;
   }
 
