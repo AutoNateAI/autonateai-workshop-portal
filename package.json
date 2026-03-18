@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "sheets:create": "node scripts/create-sheets.mjs"
   },
   "dependencies": {
     "animejs": "^4.1.4",

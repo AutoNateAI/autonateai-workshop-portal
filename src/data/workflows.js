@@ -1,3 +1,5 @@
+import {sheetLinks} from './sheetLinks.js';
+
 function promptBlock({title, body}) {
   return {title, body};
 }
@@ -19,8 +21,16 @@ function workflow({
     summary,
     useCase,
     connectors,
-    sheet,
-    prompts,
+    sheet: {
+      ...sheet,
+      templateUrl: sheetLinks[slug]?.templateUrl || '',
+      copyUrl: sheetLinks[slug]?.copyUrl || '',
+      sheetId: sheetLinks[slug]?.sheetId || '',
+    },
+    prompts: prompts.map((prompt) => ({
+      ...prompt,
+      body: `${prompt.body} If the sheet contains an "AI Key" tab, follow its structure, color logic, formatting rules, and row-status conventions while filling or updating the main sheet.`,
+    })),
   };
 }
 
