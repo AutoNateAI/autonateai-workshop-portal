@@ -100,7 +100,12 @@ export function renderLectureDeck(track) {
     <section class="module-card lecture-card">
       <div class="card-topline">
         <span class="status-pill">Lecture deck</span>
-        <span class="count-pill">${track.lectureSlides.length} slides</span>
+        <div class="lecture-top-actions">
+          <button class="btn btn-sm btn-outline-light lecture-voice-toggle" type="button" data-voice-toggle>
+            Narration Off
+          </button>
+          <span class="count-pill">${track.lectureSlides.length} slides</span>
+        </div>
       </div>
       <h2 class="section-title">Mini lecture</h2>
       <div id="lecture-deck" class="lecture-deck" data-track="${track.id}">

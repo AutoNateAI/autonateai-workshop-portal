@@ -322,6 +322,19 @@ textarea {
   margin-bottom: 0.9rem;
 }
 
+.lecture-top-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.lecture-voice-toggle.is-on {
+  border-color: rgba(125, 211, 199, 0.45);
+  background: rgba(125, 211, 199, 0.14);
+}
+
 .status-pill,
 .count-pill,
 .sheet-chip,

@@ -7,7 +7,9 @@
     "dev": "vite --host 0.0.0.0",
     "build": "vite build",
     "preview": "vite preview",
-    "sheets:create": "node scripts/create-sheets.mjs"
+    "sheets:create": "node scripts/create-sheets.mjs",
+    "voiceovers:manifest": "node scripts/build-voiceover-manifest.mjs",
+    "voiceovers:generate": "node scripts/precompute-voiceovers.mjs"
   },
   "dependencies": {
     "animejs": "^4.1.4",
