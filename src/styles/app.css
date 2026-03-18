@@ -343,7 +343,7 @@ textarea {
 }
 
 .lecture-card {
-  min-height: 100vh;
+  min-height: 90vh;
   display: grid;
   grid-template-rows: auto auto minmax(0, 1fr) auto;
   align-items: start;
@@ -901,6 +901,10 @@ textarea {
 
   .workflow-side-column {
     order: 2;
+  }
+
+  .lecture-card {
+    min-height: 82vh;
   }
 
   .prompt-pack-topline {
