@@ -202,6 +202,8 @@
           </div>
         </div>
 
+        ${_a(e)}
+
         <section class="module-card sheet-menu-panel">
           <div class="card-topline">
             <span class="status-pill">Prompt packs</span>
@@ -219,7 +221,6 @@
                   </a>`).join("")}
           </div>
         </section>
-        ${_a(e)}
       </div>
     </section>
   `):'<section class="dashboard-page"><div class="container-xl"><div class="module-card">Track not found.</div></div></section>'}function ou(t){return t.length>24}function au(t){const e=t.split(/(\[[^\]]+\])/g).filter(Boolean);return`
