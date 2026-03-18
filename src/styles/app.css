@@ -363,7 +363,7 @@ textarea {
   grid-template-rows: auto auto minmax(0, 1fr) auto;
   align-items: start;
   padding: 1rem 1.05rem;
-  margin-bottom: 0.35rem;
+  margin-bottom: 1rem;
 }
 
 .lecture-deck {
