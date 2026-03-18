@@ -280,44 +280,40 @@
     <section class="dashboard-page">
       <div class="container-xl">
         <a class="back-link" href="#/tracks/${e.trackId}" data-nav="/tracks/${e.trackId}">Back to ${e.trackId} dashboard</a>
-        <div class="workflow-layout">
-          <div class="main-column">
-            ${_a(n)}
-            ${lu(e)}
-          </div>
-          <div class="side-column workflow-side-column">
-            <section class="module-card">
-              <div class="card-topline">
-                <span class="status-pill">Sheet design</span>
-                <span class="count-pill">${e.trackId}</span>
+        <div class="workflow-stack">
+          ${_a(n)}
+          ${lu(e)}
+          <section class="module-card workflow-sheet-card">
+            <div class="card-topline">
+              <span class="status-pill">Sheet design</span>
+              <span class="count-pill">${e.trackId}</span>
+            </div>
+            <h1 class="section-title">${e.name}</h1>
+            <p class="dashboard-subtitle">${e.summary}</p>
+            ${e.sheet.copyUrl?`<div class="workflow-primary-actions mt-3">
+                    <a class="btn btn-primary" href="${e.sheet.copyUrl}" target="_blank" rel="noopener noreferrer">Copy this sheet</a>
+                    <a class="btn btn-outline-light" href="${e.sheet.templateUrl}" target="_blank" rel="noopener noreferrer">Preview template</a>
+                  </div>`:""}
+            <div class="sheet-meta-grid mt-3">
+              <div class="sheet-panel">
+                <div class="sheet-label">Sheet</div>
+                <div class="sheet-value">${e.sheet.title}</div>
               </div>
-              <h1 class="section-title">${e.name}</h1>
-              <p class="dashboard-subtitle">${e.summary}</p>
-              ${e.sheet.copyUrl?`<div class="workflow-primary-actions mt-3">
-                      <a class="btn btn-primary" href="${e.sheet.copyUrl}" target="_blank" rel="noopener noreferrer">Copy this sheet</a>
-                      <a class="btn btn-outline-light" href="${e.sheet.templateUrl}" target="_blank" rel="noopener noreferrer">Preview template</a>
-                    </div>`:""}
-              <div class="sheet-meta-grid mt-3">
-                <div class="sheet-panel">
-                  <div class="sheet-label">Sheet</div>
-                  <div class="sheet-value">${e.sheet.title}</div>
-                </div>
-                <div class="sheet-panel">
-                  <div class="sheet-label">Best use</div>
-                  <div class="sheet-value">${e.useCase}</div>
-                </div>
+              <div class="sheet-panel">
+                <div class="sheet-label">Best use</div>
+                <div class="sheet-value">${e.useCase}</div>
               </div>
-              <p class="section-copy mt-3">${e.sheet.purpose}</p>
-              <div class="sheet-outcome-card">
-                <div class="kicker">Outcome</div>
-                <strong>${e.sheet.outcome}</strong>
-              </div>
-              <div class="column-grid mt-3">
-                ${e.sheet.columns.map(i=>`
-                      <div class="column-pill">${i}</div>`).join("")}
-              </div>
-            </section>
-          </div>
+            </div>
+            <p class="section-copy mt-3">${e.sheet.purpose}</p>
+            <div class="sheet-outcome-card">
+              <div class="kicker">Outcome</div>
+              <strong>${e.sheet.outcome}</strong>
+            </div>
+            <div class="column-grid mt-3">
+              ${e.sheet.columns.map(i=>`
+                    <div class="column-pill">${i}</div>`).join("")}
+            </div>
+          </section>
         </div>
       </div>
     </section>
