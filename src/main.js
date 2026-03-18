@@ -6,16 +6,23 @@ import {renderHomePage} from './pages/homePage.js';
 import {renderTrackPage} from './pages/trackPage.js';
 import {renderWorkflowPage} from './pages/workflowPage.js';
 import {renderSetupPage} from './pages/setupPage.js';
-import {renderBlueprintPage} from './pages/blueprintPage.js';
+import {renderLoginPage} from './pages/loginPage.js';
 import {initRouter, navigateTo} from './lib/router.js';
 import {initFirebaseClient} from './lib/firebase.js';
+import {observeAuthState, signOutCurrentUser} from './lib/auth.js';
+import {initAuthUi} from './features/authUi.js';
 
 const app = document.querySelector('#app');
 
+const authState = {
+  ready: false,
+  user: null,
+};
+
 const routes = {
-  '/': renderHomePage,
+  '/': () => renderHomePage(authState.user),
+  '/login': renderLoginPage,
   '/setup': renderSetupPage,
-  '/blueprint': renderBlueprintPage,
   '/tracks/student': () => renderTrackPage('student'),
   '/tracks/researcher': () => renderTrackPage('researcher'),
 };
@@ -24,15 +31,30 @@ function render() {
   const path = window.location.hash.replace('#', '') || '/';
   const workflowMatch = path.match(/^\/workflows\/([^/]+)$/);
 
+  if (!authState.ready) {
+    app.innerHTML = `<div class="auth-shell"><div class="auth-card"><div class="brand-mark mb-2">AutoNateAI Workshop</div><div class="auth-title">Loading dashboard...</div></div></div>`;
+    return;
+  }
+
+  if (!authState.user && path !== '/login') {
+    navigateTo('/login');
+    return;
+  }
+
+  if (authState.user && path === '/login') {
+    navigateTo('/');
+    return;
+  }
+
   const pageContent = workflowMatch
     ? renderWorkflowPage(workflowMatch[1])
-    : (routes[path] || renderHomePage)();
+    : (routes[path] || (() => renderHomePage(authState.user)))();
 
-  app.innerHTML = renderAppShell(pageContent, path);
-  document.title = 'AutoNateAI Workshop Portal';
-  initFirebaseClient();
+  app.innerHTML = renderAppShell(pageContent, path, authState.user);
+  document.title = 'AutoNateAI Workshop Dashboard';
   bindGlobalActions();
-  window.scrollTo({top: 0, behavior: 'instant'});
+  initAuthUi();
+  window.scrollTo(0, 0);
 }
 
 function bindGlobalActions() {
@@ -46,7 +68,21 @@ function bindGlobalActions() {
       navigateTo(href);
     });
   });
+
+  document.querySelectorAll('[data-sign-out]').forEach((button) => {
+    button.addEventListener('click', async () => {
+      await signOutCurrentUser();
+      navigateTo('/login');
+    });
+  });
 }
+
+initFirebaseClient();
+observeAuthState((user) => {
+  authState.user = user;
+  authState.ready = true;
+  render();
+});
 
 initRouter(render);
 render();

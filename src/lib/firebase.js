@@ -29,3 +29,7 @@ export function initFirebaseClient() {
   window.FirebaseApp = firebaseServices;
   return firebaseServices;
 }
+
+export function getFirebaseServices() {
+  return firebaseServices || initFirebaseClient();
+}

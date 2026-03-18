@@ -1,35 +1,50 @@
-import {renderConnectorList} from '../components/ConnectorList.js';
 import {connectorStack} from '../data/tracks.js';
 
 export function renderSetupPage() {
   return `
-    <section class="section-shell pt-5">
-      <div class="container">
-        <div class="row g-4">
-          <div class="col-12 col-lg-7">
-            <div class="content-card h-100">
-              <div class="section-label">Workshop setup</div>
-              <h1 class="display-6 fw-bold mb-3">Get the connector stack ready before class</h1>
-              <p class="lead text-secondary">The workshop experience assumes students and researchers can move between ChatGPT, Google Sheets, and Figma without friction. The mobile experience matters, but the system should still look sharp on desktop.</p>
-              <div class="row g-3 mt-2">
-                ${[
-                  'Enable Web Search in ChatGPT so fresh context can be pulled when needed.',
-                  'Connect Google Sheets so structured outputs can become tables, dashboards, and daily operating surfaces.',
-                  'Connect Figma so visual maps, study boards, and research canvases can be generated or refined.',
-                  'Test the workflow on your phone or iPad first, then on desktop.',
-                ]
+    <section class="dashboard-page">
+      <div class="container-xl">
+        <div class="section-heading-row">
+          <div>
+            <div class="kicker">Setup</div>
+            <h1 class="dashboard-title">Get your stack ready</h1>
+            <p class="dashboard-subtitle">This dashboard assumes your AI stack is already connected before you start opening sheet kits.</p>
+          </div>
+        </div>
+
+        <div class="dashboard-grid">
+          <div class="main-column">
+            <section class="module-card">
+              <div class="card-topline">
+                <span class="status-pill">Checklist</span>
+              </div>
+              <h2 class="section-title">Core connectors</h2>
+              <div class="connector-stack">
+                ${connectorStack
                   .map(
                     (item) => `
-                      <div class="col-12">
-                        <div class="mini-card">${item}</div>
+                      <div class="connector-row">
+                        <div class="connector-dot"></div>
+                        <div>${item}</div>
                       </div>`,
                   )
                   .join('')}
               </div>
-            </div>
+            </section>
           </div>
-          <div class="col-12 col-lg-5">
-            ${renderConnectorList(connectorStack)}
+          <div class="side-column">
+            <section class="module-card">
+              <div class="card-topline">
+                <span class="status-pill">Mobile first</span>
+              </div>
+              <h2 class="section-title">Before class</h2>
+              <div class="step-stack">
+                <div class="step-row"><div class="step-index">01</div><div>Test ChatGPT on your phone or iPad.</div></div>
+                <div class="step-row"><div class="step-index">02</div><div>Make sure Sheets is connected and usable from that device.</div></div>
+                <div class="step-row"><div class="step-index">03</div><div>Open one workflow here and try the copy buttons.</div></div>
+                <div class="step-row"><div class="step-index">04</div><div>Use desktop later for deeper editing, not for first access.</div></div>
+              </div>
+            </section>
           </div>
         </div>
       </div>

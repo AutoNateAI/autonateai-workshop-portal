@@ -5,7 +5,7 @@ import {initCopyPrompt} from '../features/copyPrompt.js';
 export function renderWorkflowPage(slug) {
   const workflow = workflowIndex[slug];
   if (!workflow) {
-    return `<section class="section-shell"><div class="container"><div class="content-card">Workflow not found.</div></div></section>`;
+    return `<section class="dashboard-page"><div class="container-xl"><div class="module-card">Workflow not found.</div></div></section>`;
   }
 
   queueMicrotask(() => {
@@ -13,39 +13,51 @@ export function renderWorkflowPage(slug) {
   });
 
   return `
-    <section class="section-shell pt-5">
-      <div class="container">
-        <a class="eyebrow text-uppercase small fw-semibold text-decoration-none" href="#/tracks/${workflow.trackId}" data-nav="/tracks/${workflow.trackId}">
-          Back to ${workflow.trackId} track
-        </a>
-        <div class="row g-4 mt-1">
-          <div class="col-12 col-xl-7">
-            <div class="content-card">
-              <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
-                <div>
-                  <div class="section-label">AI Workflow</div>
-                  <h1 class="display-6 fw-bold mb-2">${workflow.name}</h1>
+    <section class="dashboard-page">
+      <div class="container-xl">
+        <a class="back-link" href="#/tracks/${workflow.trackId}" data-nav="/tracks/${workflow.trackId}">Back to ${workflow.trackId} dashboard</a>
+        <div class="workflow-layout">
+          <div class="main-column">
+            <section class="module-card">
+              <div class="card-topline">
+                <span class="status-pill">Sheet kit</span>
+                <span class="count-pill">${workflow.trackId}</span>
+              </div>
+              <h1 class="dashboard-title">${workflow.name}</h1>
+              <p class="dashboard-subtitle">${workflow.summary}</p>
+              <div class="sheet-meta-grid">
+                <div class="sheet-panel">
+                  <div class="sheet-label">Sheet</div>
+                  <div class="sheet-value">${workflow.sheet.title}</div>
                 </div>
-                <span class="pill">${workflow.trackId}</span>
-              </div>
-              <p class="lead text-secondary mb-4">${workflow.summary}</p>
-              <div class="mb-4">
-                <div class="section-label">Best for</div>
-                <p class="mb-0">${workflow.useCase}</p>
-              </div>
-              <div class="mb-4">
-                <div class="section-label">Connectors</div>
-                <div class="d-flex flex-wrap gap-2">
-                  ${workflow.connectors.map((connector) => `<span class="pill">${connector}</span>`).join('')}
+                <div class="sheet-panel">
+                  <div class="sheet-label">Best use</div>
+                  <div class="sheet-value">${workflow.useCase}</div>
                 </div>
               </div>
-              <div class="mini-card">
-                <strong>Workflow UX direction</strong>
-                <p class="mb-0 mt-2 text-secondary">This page is mobile-first: short context, visible connectors, one large copy button, and prompt text that can be lifted directly into ChatGPT on phone or iPad.</p>
+            </section>
+
+            <section class="module-card">
+              <div class="card-topline">
+                <span class="status-pill">Sheet design</span>
               </div>
-            </div>
+              <h2 class="section-title">${workflow.sheet.title}</h2>
+              <p class="section-copy">${workflow.sheet.purpose}</p>
+              <div class="sheet-outcome-card">
+                <div class="kicker">Outcome</div>
+                <strong>${workflow.sheet.outcome}</strong>
+              </div>
+              <div class="column-grid mt-3">
+                ${workflow.sheet.columns
+                  .map(
+                    (column) => `
+                      <div class="column-pill">${column}</div>`,
+                  )
+                  .join('')}
+              </div>
+            </section>
           </div>
-          <div class="col-12 col-xl-5">
+          <div class="side-column">
             ${renderPromptCard(workflow)}
           </div>
         </div>

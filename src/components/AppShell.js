@@ -1,38 +1,69 @@
-export function renderAppShell(content, currentPath) {
+export function renderAppShell(content, currentPath, user) {
+  const navItems = [
+    {href: '/', label: 'Dashboard'},
+    {href: '/tracks/student', label: 'Student'},
+    {href: '/tracks/researcher', label: 'Research'},
+    {href: '/setup', label: 'Setup'},
+  ];
+
   return `
-    <div class="site-shell">
-      <header class="site-header sticky-top border-bottom border-dark-subtle">
-        <nav class="navbar navbar-expand-lg navbar-dark">
-          <div class="container py-2">
-            <a class="navbar-brand fw-semibold" href="#/" data-nav="/">AutoNateAI Workshop</a>
-            <button
-              class="navbar-toggler"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#portal-nav"
-              aria-controls="portal-nav"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
-            >
-              <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="portal-nav">
-              <div class="navbar-nav ms-auto gap-lg-2">
-                ${navLink('/tracks/student', 'Students', currentPath)}
-                ${navLink('/tracks/researcher', 'Researchers', currentPath)}
-                ${navLink('/setup', 'Setup', currentPath)}
-                ${navLink('/blueprint', 'Blueprint', currentPath)}
-              </div>
-            </div>
+    <div class="dashboard-shell">
+      <header class="topbar">
+        <div class="container-xl d-flex align-items-center justify-content-between gap-3">
+          <div>
+            <div class="brand-mark">AutoNateAI Workshop</div>
+            <div class="brand-subtle">Member dashboard</div>
           </div>
-        </nav>
+          ${
+            user
+              ? `
+            <div class="topbar-user">
+              <div class="user-badge">${getUserInitials(user)}</div>
+              <div class="topbar-meta">
+                <div class="topbar-email">${user.email || 'Signed in'}</div>
+                <button class="topbar-link" type="button" data-sign-out>Sign out</button>
+              </div>
+            </div>`
+              : ''
+          }
+        </div>
       </header>
-      <main>${content}</main>
+      <div class="app-body">
+        <aside class="side-rail">
+          <div class="side-rail-inner">
+            ${navItems.map((item) => sideRailLink(item, currentPath)).join('')}
+          </div>
+        </aside>
+        <main class="main-stage">${content}</main>
+      </div>
+      ${
+        user
+          ? `
+        <nav class="mobile-dock">
+          ${navItems.map((item) => mobileDockLink(item, currentPath)).join('')}
+        </nav>`
+          : ''
+      }
     </div>
   `;
 }
 
-function navLink(href, label, currentPath) {
-  const activeClass = currentPath === href ? 'active' : '';
-  return `<a class="nav-link ${activeClass}" href="#${href}" data-nav="${href}">${label}</a>`;
+function sideRailLink(item, currentPath) {
+  const active = currentPath === item.href ? 'is-active' : '';
+  return `<a class="rail-link ${active}" href="#${item.href}" data-nav="${item.href}">${item.label}</a>`;
+}
+
+function mobileDockLink(item, currentPath) {
+  const active = currentPath === item.href ? 'is-active' : '';
+  return `<a class="dock-link ${active}" href="#${item.href}" data-nav="${item.href}">${item.label}</a>`;
+}
+
+function getUserInitials(user) {
+  const seed = user.displayName || user.email || 'A';
+  return seed
+    .split(/[ .@_-]+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((chunk) => chunk[0]?.toUpperCase())
+    .join('');
 }

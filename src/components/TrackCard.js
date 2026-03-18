@@ -1,28 +1,28 @@
 export function renderTrackCard(track) {
   return `
-    <article class="col-12 col-lg-6">
-      <div class="content-card h-100 d-flex flex-column">
-        <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
-          <div>
-            <div class="eyebrow text-uppercase small fw-semibold mb-2">${track.label}</div>
-            <h2 class="h3 mb-2">${track.hero}</h2>
-          </div>
-          <span class="pill">${track.workflows.length} workflows</span>
+    <article class="module-card track-card">
+      <div class="card-topline">
+        <span class="status-pill">${track.status}</span>
+        <span class="count-pill">${track.workflows.length} kits</span>
+      </div>
+      <h2 class="track-title">${track.label}</h2>
+      <p class="track-hero">${track.hero}</p>
+      <p class="track-audience">${track.audience}</p>
+      <div class="metric-strip">
+        <div>
+          <div class="metric-label">Slides</div>
+          <div class="metric-value">${track.lectureSlides.length}</div>
         </div>
-        <p class="text-secondary mb-4">${track.audience}</p>
-        <div class="mb-4">
-          <div class="section-label">Workshop flow</div>
-          <div class="d-flex flex-wrap gap-2">
-            <span class="pill">Lecture</span>
-            <span class="pill">Quest</span>
-            <span class="pill">Workflows</span>
-            <span class="pill">Debrief</span>
-          </div>
+        <div>
+          <div class="metric-label">Workflows</div>
+          <div class="metric-value">${track.workflows.length}</div>
         </div>
-        <div class="mt-auto d-flex flex-wrap gap-2">
-          <a class="btn btn-primary" href="#/tracks/${track.id}" data-nav="/tracks/${track.id}">Open Track</a>
+        <div>
+          <div class="metric-label">Mode</div>
+          <div class="metric-value">Sheets + AI</div>
         </div>
       </div>
+      <a class="btn btn-primary w-100 mt-3" href="#/tracks/${track.id}" data-nav="/tracks/${track.id}">Open dashboard</a>
     </article>
   `;
 }

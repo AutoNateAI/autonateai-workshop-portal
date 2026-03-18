@@ -1,15 +1,37 @@
 export function renderPromptCard(workflow) {
   return `
-    <section class="content-card sticky-card">
-      <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
-        <div>
-          <div class="section-label">Prompt</div>
-          <h2 class="h4 mb-0">Copy into ChatGPT</h2>
-        </div>
-        <button class="btn btn-primary" type="button" data-copy-prompt="${workflow.slug}">Copy Prompt</button>
+    <section class="module-card prompt-pack-card">
+      <div class="card-topline">
+        <span class="status-pill">Prompt pack</span>
+        <span class="count-pill">${workflow.prompts.length} prompts</span>
       </div>
-      <textarea class="prompt-textarea form-control" rows="16" readonly>${workflow.prompt}</textarea>
-      <p class="small text-secondary mt-3 mb-0">Use this as the default scaffold, then fill in the blanks with your real context before sending it to ChatGPT.</p>
+      <h2 class="section-title">Run this sheet with these prompts</h2>
+      <div class="prompt-pack">
+        ${workflow.prompts
+          .map(
+            (prompt, index) => `
+              <article class="prompt-block">
+                <div class="prompt-block-head">
+                  <div>
+                    <div class="prompt-kicker">Prompt ${index + 1}</div>
+                    <h3>${prompt.title}</h3>
+                  </div>
+                  <button class="btn btn-sm btn-primary" type="button" data-copy-target="prompt-${workflow.slug}-${index}">
+                    Copy
+                  </button>
+                </div>
+                <pre id="prompt-${workflow.slug}-${index}" class="prompt-pre">${escapeHtml(prompt.body)}</pre>
+              </article>`,
+          )
+          .join('')}
+      </div>
     </section>
   `;
+}
+
+function escapeHtml(text) {
+  return text
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;');
 }

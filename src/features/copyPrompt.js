@@ -1,16 +1,15 @@
 import {copyText} from '../lib/copy.js';
-import {workflowIndex} from '../data/workflows.js';
 
 export function initCopyPrompt() {
-  document.querySelectorAll('[data-copy-prompt]').forEach((button) => {
+  document.querySelectorAll('[data-copy-target]').forEach((button) => {
     button.addEventListener('click', async () => {
-      const slug = button.getAttribute('data-copy-prompt');
-      const workflow = workflowIndex[slug];
-      if (!workflow) {
+      const targetId = button.getAttribute('data-copy-target');
+      const target = document.getElementById(targetId);
+      if (!target) {
         return;
       }
 
-      await copyText(workflow.prompt);
+      await copyText(target.textContent || '');
       const originalText = button.textContent;
       button.textContent = 'Copied';
       setTimeout(() => {
