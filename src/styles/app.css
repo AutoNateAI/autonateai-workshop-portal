@@ -342,9 +342,22 @@ textarea {
   margin-top: 1rem;
 }
 
+.lecture-card {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  align-items: start;
+}
+
+.lecture-deck {
+  min-height: 0;
+  display: grid;
+}
+
 .lecture-slide {
   display: none;
-  min-height: 230px;
+  min-height: 100%;
+  align-content: start;
 }
 
 .lecture-slide.is-active {
