@@ -2,6 +2,7 @@ import {animate} from 'animejs';
 import {voiceovers} from '../data/voiceovers.js';
 
 const VOICE_ENABLED_KEY = 'autonateai-workshop-voice-enabled';
+const AUTO_ADVANCE_DELAY_MS = 3000;
 
 export function initLectureDeck() {
   const deck = document.querySelector('#lecture-deck');
@@ -14,6 +15,7 @@ export function initLectureDeck() {
   const toggle = document.querySelector('[data-voice-toggle]');
   const stopButton = document.querySelector('[data-voice-stop]');
   const audio = new Audio();
+  let autoAdvanceTimer = 0;
   let voiceEnabled = window.localStorage.getItem(VOICE_ENABLED_KEY) === 'true';
   let currentIndex = slides.findIndex((slide) => slide.classList.contains('is-active'));
   if (currentIndex < 0) {
@@ -30,6 +32,7 @@ export function initLectureDeck() {
   }
 
   function stopAudio() {
+    window.clearTimeout(autoAdvanceTimer);
     audio.pause();
     audio.currentTime = 0;
   }
@@ -50,6 +53,7 @@ export function initLectureDeck() {
   }
 
   function show(index) {
+    window.clearTimeout(autoAdvanceTimer);
     slides.forEach((slide, slideIndex) => {
       slide.classList.toggle('is-active', slideIndex === index);
     });
@@ -63,6 +67,18 @@ export function initLectureDeck() {
 
     playCurrent(index);
   }
+
+  audio.addEventListener('ended', () => {
+    window.clearTimeout(autoAdvanceTimer);
+    if (!voiceEnabled) {
+      return;
+    }
+
+    autoAdvanceTimer = window.setTimeout(() => {
+      currentIndex = (currentIndex + 1) % slides.length;
+      show(currentIndex);
+    }, AUTO_ADVANCE_DELAY_MS);
+  });
 
   document.querySelectorAll('[data-slide-action]').forEach((button) => {
     button.addEventListener('click', () => {
