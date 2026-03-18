@@ -288,6 +288,11 @@ textarea {
   align-items: start;
 }
 
+.workflow-stack {
+  display: grid;
+  gap: 1rem;
+}
+
 .track-utility-row {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(260px, 320px);
@@ -303,10 +308,6 @@ textarea {
 .side-column {
   display: grid;
   gap: 1rem;
-}
-
-.workflow-side-column {
-  align-content: start;
 }
 
 .module-card {
