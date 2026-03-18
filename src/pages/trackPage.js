@@ -44,7 +44,6 @@ export function renderTrackPage(trackId) {
               .join('')}
           </div>
         </section>
-
         ${renderLectureDeck(track)}
       </div>
     </section>
