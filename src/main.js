@@ -11,6 +11,7 @@ import {initRouter, navigateTo} from './lib/router.js';
 import {initFirebaseClient} from './lib/firebase.js';
 import {observeAuthState, signOutCurrentUser} from './lib/auth.js';
 import {initAuthUi} from './features/authUi.js';
+import {teardownLectureDeck} from './features/lectureDeck.js';
 
 const app = document.querySelector('#app');
 
@@ -28,6 +29,8 @@ const routes = {
 };
 
 function render() {
+  teardownLectureDeck();
+
   const path = window.location.hash.replace('#', '') || '/';
   const workflowMatch = path.match(/^\/workflows\/([^/]+)$/);
 

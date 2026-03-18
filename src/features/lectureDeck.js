@@ -3,8 +3,16 @@ import {voiceovers} from '../data/voiceovers.js';
 
 const VOICE_ENABLED_KEY = 'autonateai-workshop-voice-enabled';
 const AUTO_ADVANCE_DELAY_MS = 3000;
+let activeCleanup = null;
+
+export function teardownLectureDeck() {
+  activeCleanup?.();
+  activeCleanup = null;
+}
 
 export function initLectureDeck() {
+  teardownLectureDeck();
+
   const deck = document.querySelector('#lecture-deck');
   if (!deck) {
     return;
@@ -111,4 +119,11 @@ export function initLectureDeck() {
       playCurrent(currentIndex);
     }, 120);
   }
+
+  activeCleanup = () => {
+    window.clearTimeout(autoAdvanceTimer);
+    audio.pause();
+    audio.currentTime = 0;
+    audio.src = '';
+  };
 }
