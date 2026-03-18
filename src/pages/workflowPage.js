@@ -23,12 +23,12 @@ export function renderWorkflowPage(slug) {
           <div class="side-column workflow-side-column">
             <section class="module-card">
               <div class="card-topline">
-                <span class="status-pill">Sheet kit</span>
+                <span class="status-pill">Sheet design</span>
                 <span class="count-pill">${workflow.trackId}</span>
               </div>
-              <h1 class="dashboard-title">${workflow.name}</h1>
+              <h1 class="section-title">${workflow.name}</h1>
               <p class="dashboard-subtitle">${workflow.summary}</p>
-              <div class="sheet-meta-grid">
+              <div class="sheet-meta-grid mt-3">
                 <div class="sheet-panel">
                   <div class="sheet-label">Sheet</div>
                   <div class="sheet-value">${workflow.sheet.title}</div>
@@ -38,14 +38,7 @@ export function renderWorkflowPage(slug) {
                   <div class="sheet-value">${workflow.useCase}</div>
                 </div>
               </div>
-            </section>
-
-            <section class="module-card">
-              <div class="card-topline">
-                <span class="status-pill">Sheet design</span>
-              </div>
-              <h2 class="section-title">${workflow.sheet.title}</h2>
-              <p class="section-copy">${workflow.sheet.purpose}</p>
+              <p class="section-copy mt-3">${workflow.sheet.purpose}</p>
               <div class="sheet-outcome-card">
                 <div class="kicker">Outcome</div>
                 <strong>${workflow.sheet.outcome}</strong>
