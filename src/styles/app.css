@@ -167,7 +167,13 @@ textarea {
 .dashboard-hero {
   padding: 1.35rem;
   display: grid;
-  gap: 1rem;
+  gap: 1.25rem;
+}
+
+.hero-copy-wrap {
+  display: grid;
+  gap: 0.55rem;
+  padding-bottom: 0.35rem;
 }
 
 .hero-actions-grid {
