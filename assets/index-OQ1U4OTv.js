@@ -642,6 +642,9 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         <a class="back-link" href="#/tracks/${e.trackId}" data-nav="/tracks/${e.trackId}">Back to ${e.trackId} dashboard</a>
         <div class="workflow-layout">
           <div class="main-column">
+            ${cx(e)}
+          </div>
+          <div class="side-column workflow-side-column">
             <section class="module-card">
               <div class="card-topline">
                 <span class="status-pill">Sheet kit</span>
@@ -680,9 +683,6 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
                       <div class="column-pill">${r}</div>`).join("")}
               </div>
             </section>
-          </div>
-          <div class="side-column">
-            ${cx(e)}
           </div>
         </div>
       </div>
