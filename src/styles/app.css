@@ -423,6 +423,45 @@ textarea {
   line-height: 1.55;
 }
 
+.slide-activity-card {
+  border: 1px solid rgba(125, 211, 199, 0.24);
+  border-radius: 22px;
+  padding: 0.95rem;
+  background:
+    linear-gradient(135deg, rgba(125, 211, 199, 0.08), rgba(239, 131, 84, 0.08)),
+    rgba(255, 255, 255, 0.03);
+  display: grid;
+  gap: 0.75rem;
+}
+
+.slide-activity-topline {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.slide-activity-card h4 {
+  margin: 0;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.02rem;
+}
+
+.slide-activity-prompt {
+  margin: 0;
+  color: var(--accent-soft);
+  line-height: 1.55;
+}
+
+.slide-activity-list {
+  margin: 0;
+  padding-left: 1.1rem;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.slide-activity-list li {
+  line-height: 1.5;
+}
+
 .slide-visual-grid {
   display: grid;
   gap: 0.9rem;

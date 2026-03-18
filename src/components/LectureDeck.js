@@ -76,6 +76,25 @@ function renderVisual(visual) {
   return renderChartVisual(visual);
 }
 
+function renderActivity(activity) {
+  if (!activity) {
+    return '';
+  }
+
+  return `
+    <section class="slide-activity-card">
+      <div class="slide-activity-topline">
+        <span class="status-pill">Activity</span>
+      </div>
+      <h4>${activity.title}</h4>
+      <p class="slide-activity-prompt">${activity.prompt}</p>
+      <ul class="slide-activity-list">
+        ${activity.steps.map((step) => `<li>${step}</li>`).join('')}
+      </ul>
+    </section>
+  `;
+}
+
 export function renderLectureDeck(track) {
   return `
     <section class="module-card lecture-card">
@@ -102,6 +121,7 @@ export function renderLectureDeck(track) {
                         </ul>`
                       : ''
                   }
+                  ${renderActivity(slide.activity)}
                 </div>
                 <div class="slide-visual-grid">
                   ${(slide.visuals || []).map((visual) => renderVisual(visual)).join('')}
