@@ -219,7 +219,6 @@
                   </a>`).join("")}
           </div>
         </section>
-
         ${_a(e)}
       </div>
     </section>
