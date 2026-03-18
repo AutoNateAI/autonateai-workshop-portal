@@ -270,7 +270,7 @@ textarea {
 
 .dashboard-grid,
 .workflow-layout {
-  grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.9fr);
+  grid-template-columns: minmax(0, 1.5fr) minmax(280px, 0.72fr);
   align-items: start;
 }
 
@@ -289,6 +289,10 @@ textarea {
 .side-column {
   display: grid;
   gap: 1rem;
+}
+
+.workflow-side-column {
+  align-content: start;
 }
 
 .module-card {
@@ -461,6 +465,8 @@ textarea {
   display: grid;
   gap: 1rem;
   overflow: hidden;
+  min-height: clamp(540px, calc(100vh - 120px), 760px);
+  max-height: clamp(540px, calc(100vh - 120px), 760px);
 }
 
 .prompt-pack-topline {
@@ -500,6 +506,8 @@ textarea {
   scroll-behavior: smooth;
   scrollbar-width: none;
   padding-bottom: 0.35rem;
+  touch-action: pan-x pinch-zoom;
+  overscroll-behavior-x: contain;
 }
 
 .prompt-pack::-webkit-scrollbar,
@@ -510,6 +518,7 @@ textarea {
 
 .prompt-block {
   min-width: 0;
+  height: 100%;
   border: 1px solid var(--line);
   border-radius: 22px;
   padding: 0.95rem;
@@ -517,6 +526,9 @@ textarea {
     linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.015)),
     rgba(255, 255, 255, 0.02);
   scroll-snap-align: start;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  overflow: hidden;
 }
 
 .prompt-block-head {
@@ -535,13 +547,19 @@ textarea {
 .prompt-template {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
+  align-content: flex-start;
   gap: 0.4rem 0.5rem;
   line-height: 1.95;
   padding: 0.95rem;
   border: 1px solid rgba(168, 187, 205, 0.12);
   border-radius: 18px;
   background: rgba(2, 6, 12, 0.76);
+  min-height: 0;
+  height: 100%;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y pinch-zoom;
 }
 
 .prompt-text {
@@ -752,6 +770,8 @@ textarea {
 
   .prompt-pack-card {
     position: static;
+    min-height: clamp(500px, 70vh, 680px);
+    max-height: clamp(500px, 70vh, 680px);
   }
 
   .track-utility-row {
@@ -799,6 +819,14 @@ textarea {
     font-size: 0.82rem;
   }
 
+  .workflow-layout {
+    gap: 0.8rem;
+  }
+
+  .workflow-side-column {
+    order: 2;
+  }
+
   .prompt-pack-topline {
     flex-direction: column;
     align-items: stretch;
@@ -806,6 +834,11 @@ textarea {
 
   .prompt-carousel-controls {
     justify-content: space-between;
+  }
+
+  .prompt-pack-card {
+    min-height: clamp(460px, 72vh, 620px);
+    max-height: clamp(460px, 72vh, 620px);
   }
 
   .prompt-block-head {
