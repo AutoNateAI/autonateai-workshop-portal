@@ -647,12 +647,12 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           <div class="side-column workflow-side-column">
             <section class="module-card">
               <div class="card-topline">
-                <span class="status-pill">Sheet kit</span>
+                <span class="status-pill">Sheet design</span>
                 <span class="count-pill">${e.trackId}</span>
               </div>
-              <h1 class="dashboard-title">${e.name}</h1>
+              <h1 class="section-title">${e.name}</h1>
               <p class="dashboard-subtitle">${e.summary}</p>
-              <div class="sheet-meta-grid">
+              <div class="sheet-meta-grid mt-3">
                 <div class="sheet-panel">
                   <div class="sheet-label">Sheet</div>
                   <div class="sheet-value">${e.sheet.title}</div>
@@ -662,14 +662,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
                   <div class="sheet-value">${e.useCase}</div>
                 </div>
               </div>
-            </section>
-
-            <section class="module-card">
-              <div class="card-topline">
-                <span class="status-pill">Sheet design</span>
-              </div>
-              <h2 class="section-title">${e.sheet.title}</h2>
-              <p class="section-copy">${e.sheet.purpose}</p>
+              <p class="section-copy mt-3">${e.sheet.purpose}</p>
               <div class="sheet-outcome-card">
                 <div class="kicker">Outcome</div>
                 <strong>${e.sheet.outcome}</strong>
