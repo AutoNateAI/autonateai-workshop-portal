@@ -11,9 +11,16 @@ export function renderWorkflowCard(workflow) {
       <div class="connector-chip-row">
         ${workflow.connectors.map((connector) => `<span class="connector-chip">${connector}</span>`).join('')}
       </div>
-      <a class="btn btn-outline-light w-100 mt-3" href="#/workflows/${workflow.slug}" data-nav="/workflows/${workflow.slug}">
-        Open sheet kit
-      </a>
+      <div class="workflow-card-actions">
+        <a class="btn btn-outline-light w-100 mt-3" href="#/workflows/${workflow.slug}" data-nav="/workflows/${workflow.slug}">
+          Open sheet kit
+        </a>
+        ${
+          workflow.sheet.copyUrl
+            ? `<a class="btn btn-primary w-100 mt-2" href="${workflow.sheet.copyUrl}" target="_blank" rel="noopener noreferrer">Copy Sheet</a>`
+            : ''
+        }
+      </div>
     </article>
   `;
 }

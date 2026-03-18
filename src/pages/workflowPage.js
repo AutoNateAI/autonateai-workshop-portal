@@ -47,6 +47,14 @@ export function renderWorkflowPage(slug) {
                 <div class="kicker">Outcome</div>
                 <strong>${workflow.sheet.outcome}</strong>
               </div>
+              ${
+                workflow.sheet.copyUrl
+                  ? `<div class="workflow-primary-actions mt-3">
+                      <a class="btn btn-primary" href="${workflow.sheet.copyUrl}" target="_blank" rel="noopener noreferrer">Copy this sheet</a>
+                      <a class="btn btn-outline-light" href="${workflow.sheet.templateUrl}" target="_blank" rel="noopener noreferrer">Preview template</a>
+                    </div>`
+                  : ''
+              }
               <div class="column-grid mt-3">
                 ${workflow.sheet.columns
                   .map(
