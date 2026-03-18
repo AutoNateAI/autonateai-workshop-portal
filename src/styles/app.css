@@ -371,18 +371,181 @@ textarea {
 .lecture-slide {
   display: none;
   min-height: 100%;
-  align-content: start;
+  grid-template-columns: minmax(0, 1.05fr) minmax(280px, 0.95fr);
+  gap: 1rem;
+  align-items: start;
+  overflow: auto;
 }
 
 .lecture-slide.is-active {
   display: grid;
-  gap: 0.9rem;
 }
 
 .lecture-slide h3 {
   margin: 0;
-  font-size: 1.6rem;
-  line-height: 1.1;
+  font-size: clamp(1.55rem, 2.2vw, 2.3rem);
+  line-height: 1.06;
+}
+
+.lecture-copy,
+.slide-visual-grid {
+  min-width: 0;
+}
+
+.lecture-copy {
+  display: grid;
+  align-content: start;
+  gap: 0.85rem;
+}
+
+.slide-eyebrow {
+  color: var(--accent-cool);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+.slide-lead {
+  font-size: 1.02rem;
+  color: var(--accent-soft);
+}
+
+.slide-point-list {
+  display: grid;
+  gap: 0.65rem;
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+.slide-point-list li {
+  color: var(--text);
+  line-height: 1.55;
+}
+
+.slide-visual-grid {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.slide-visual-card {
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 0.9rem;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.slide-visual-title {
+  color: var(--accent-soft);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.92rem;
+}
+
+.graph-node-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.graph-node {
+  border-radius: 16px;
+  padding: 0.7rem 0.8rem;
+  text-align: center;
+  font-weight: 700;
+  border: 1px solid var(--line);
+}
+
+.graph-node--accent {
+  background: rgba(239, 131, 84, 0.14);
+}
+
+.graph-node--cool {
+  background: rgba(125, 211, 199, 0.14);
+}
+
+.graph-node--muted {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.graph-edge-list {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.graph-edge {
+  color: var(--muted);
+  font-size: 0.88rem;
+  padding: 0.45rem 0.65rem;
+  border-radius: 14px;
+  background: rgba(8, 16, 24, 0.82);
+}
+
+.slide-table-wrap {
+  overflow: auto;
+}
+
+.slide-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 420px;
+}
+
+.slide-table th,
+.slide-table td {
+  padding: 0.7rem 0.75rem;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid rgba(168, 187, 205, 0.12);
+  font-size: 0.88rem;
+}
+
+.slide-table th {
+  color: var(--accent-soft);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+}
+
+.chart-stack {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.chart-row {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.chart-row-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  font-size: 0.88rem;
+}
+
+.chart-bar-shell {
+  height: 12px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.chart-bar {
+  height: 100%;
+  border-radius: 999px;
+}
+
+.chart-bar--accent {
+  background: linear-gradient(90deg, var(--accent), #f7b267);
+}
+
+.chart-bar--cool {
+  background: linear-gradient(90deg, var(--accent-cool), #b2f7ef);
+}
+
+.chart-bar--muted {
+  background: linear-gradient(90deg, #718096, #a0aec0);
 }
 
 .lecture-slide p,
@@ -911,6 +1074,19 @@ textarea {
     height: 36px;
     border-radius: 12px;
     font-size: 0.82rem;
+  }
+
+  .lecture-slide,
+  .lecture-slide.is-active {
+    grid-template-columns: 1fr;
+  }
+
+  .slide-visual-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .graph-node-grid {
+    grid-template-columns: 1fr;
   }
 
   .workflow-layout {
