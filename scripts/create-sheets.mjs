@@ -14,6 +14,8 @@ const serviceAccountPath =
 
 const studentFolderId = '16_tjSZcqP4ZEUHShC2pr7NCkx-tuWEN9';
 const researcherFolderId = '1-TXzXDRLeU3Msd49Fb2IUdgT_7NwnPFw';
+const expansiveRowCount = 1000;
+const expansiveColumnCount = 26;
 
 const palette = {
   charcoal: {red: 0.10, green: 0.14, blue: 0.19},
@@ -122,19 +124,19 @@ function buildBatchUpdateRequests(workflow, mainSheetId, keySheetId) {
   const requests = [
     {
       updateSheetProperties: {
-        properties: {sheetId: mainSheetId, title: workflow.sheet.title, gridProperties: {frozenRowCount: 1, rowCount: 220, columnCount: workflow.sheet.columns.length}},
+        properties: {sheetId: mainSheetId, title: workflow.sheet.title, gridProperties: {frozenRowCount: 1, rowCount: expansiveRowCount, columnCount: expansiveColumnCount}},
         fields: 'title,gridProperties.frozenRowCount,gridProperties.rowCount,gridProperties.columnCount',
       },
     },
     {
       updateSheetProperties: {
-        properties: {sheetId: keySheetId, title: 'AI Key', gridProperties: {frozenRowCount: 1, rowCount: 120, columnCount: 2}},
+        properties: {sheetId: keySheetId, title: 'AI Key', gridProperties: {frozenRowCount: 1, rowCount: expansiveRowCount, columnCount: expansiveColumnCount}},
         fields: 'title,gridProperties.frozenRowCount,gridProperties.rowCount,gridProperties.columnCount',
       },
     },
     {
       repeatCell: {
-        range: {sheetId: mainSheetId, startRowIndex: 0, endRowIndex: 220, startColumnIndex: 0, endColumnIndex: workflow.sheet.columns.length},
+        range: {sheetId: mainSheetId, startRowIndex: 0, endRowIndex: expansiveRowCount, startColumnIndex: 0, endColumnIndex: workflow.sheet.columns.length},
         cell: {
           userEnteredFormat: {
             horizontalAlignment: 'CENTER',
@@ -149,7 +151,7 @@ function buildBatchUpdateRequests(workflow, mainSheetId, keySheetId) {
     },
     {
       repeatCell: {
-        range: {sheetId: keySheetId, startRowIndex: 0, endRowIndex: 120, startColumnIndex: 0, endColumnIndex: 2},
+        range: {sheetId: keySheetId, startRowIndex: 0, endRowIndex: expansiveRowCount, startColumnIndex: 0, endColumnIndex: 2},
         cell: {
           userEnteredFormat: {
             horizontalAlignment: 'CENTER',
@@ -163,14 +165,14 @@ function buildBatchUpdateRequests(workflow, mainSheetId, keySheetId) {
     },
     {
       updateDimensionProperties: {
-        range: {sheetId: mainSheetId, dimension: 'ROWS', startIndex: 0, endIndex: 220},
+        range: {sheetId: mainSheetId, dimension: 'ROWS', startIndex: 0, endIndex: expansiveRowCount},
         properties: {pixelSize: 38},
         fields: 'pixelSize',
       },
     },
     {
       updateDimensionProperties: {
-        range: {sheetId: keySheetId, dimension: 'ROWS', startIndex: 0, endIndex: 120},
+        range: {sheetId: keySheetId, dimension: 'ROWS', startIndex: 0, endIndex: expansiveRowCount},
         properties: {pixelSize: 34},
         fields: 'pixelSize',
       },
@@ -183,17 +185,9 @@ function buildBatchUpdateRequests(workflow, mainSheetId, keySheetId) {
       },
     },
     {
-      addBanding: {
-        bandedRange: {
-          range: {sheetId: mainSheetId, startRowIndex: 0, endRowIndex: 220, startColumnIndex: 0, endColumnIndex: workflow.sheet.columns.length},
-          rowProperties: {headerColor: palette.charcoal, firstBandColor: palette.cream, secondBandColor: palette.slate},
-        },
-      },
-    },
-    {
       setBasicFilter: {
         filter: {
-          range: {sheetId: mainSheetId, startRowIndex: 0, endRowIndex: 220, startColumnIndex: 0, endColumnIndex: workflow.sheet.columns.length},
+          range: {sheetId: mainSheetId, startRowIndex: 0, endRowIndex: expansiveRowCount, startColumnIndex: 0, endColumnIndex: workflow.sheet.columns.length},
         },
       },
     },
@@ -222,6 +216,20 @@ function buildBatchUpdateRequests(workflow, mainSheetId, keySheetId) {
       updateDimensionProperties: {
         range: {sheetId: keySheetId, dimension: 'COLUMNS', startIndex: 1, endIndex: 2},
         properties: {pixelSize: 760},
+        fields: 'pixelSize',
+      },
+    },
+    {
+      updateDimensionProperties: {
+        range: {sheetId: mainSheetId, dimension: 'COLUMNS', startIndex: workflow.sheet.columns.length, endIndex: expansiveColumnCount},
+        properties: {pixelSize: 140},
+        fields: 'pixelSize',
+      },
+    },
+    {
+      updateDimensionProperties: {
+        range: {sheetId: keySheetId, dimension: 'COLUMNS', startIndex: 2, endIndex: expansiveColumnCount},
+        properties: {pixelSize: 140},
         fields: 'pixelSize',
       },
     },
