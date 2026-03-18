@@ -335,6 +335,10 @@ textarea {
   background: rgba(125, 211, 199, 0.14);
 }
 
+.lecture-voice-stop {
+  min-width: 64px;
+}
+
 .status-pill,
 .count-pill,
 .sheet-chip,
@@ -485,6 +489,24 @@ textarea {
 
 .slide-activity-list li {
   line-height: 1.5;
+}
+
+.slide-transcript {
+  border-top: 1px solid rgba(168, 187, 205, 0.12);
+  padding-top: 0.75rem;
+}
+
+.slide-transcript summary {
+  cursor: pointer;
+  color: var(--accent-soft);
+  font-weight: 700;
+}
+
+.slide-transcript-copy {
+  margin-top: 0.7rem;
+  color: var(--muted);
+  line-height: 1.6;
+  white-space: pre-wrap;
 }
 
 .slide-visual-grid {

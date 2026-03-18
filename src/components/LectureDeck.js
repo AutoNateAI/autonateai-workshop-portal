@@ -104,6 +104,9 @@ export function renderLectureDeck(track) {
           <button class="btn btn-sm btn-outline-light lecture-voice-toggle" type="button" data-voice-toggle>
             Narration Off
           </button>
+          <button class="btn btn-sm btn-outline-light lecture-voice-stop" type="button" data-voice-stop>
+            Stop
+          </button>
           <span class="count-pill">${track.lectureSlides.length} slides</span>
         </div>
       </div>
@@ -127,6 +130,10 @@ export function renderLectureDeck(track) {
                       : ''
                   }
                   ${renderActivity(slide.activity)}
+                  <details class="slide-transcript">
+                    <summary>Transcript</summary>
+                    <div class="slide-transcript-copy">${getSlideNarration(track, slide, index)}</div>
+                  </details>
                 </div>
                 <div class="slide-visual-grid">
                   ${(slide.visuals || []).map((visual) => renderVisual(visual)).join('')}
@@ -142,3 +149,4 @@ export function renderLectureDeck(track) {
     </section>
   `;
 }
+import {getSlideNarration} from '../lib/voiceoverText.js';

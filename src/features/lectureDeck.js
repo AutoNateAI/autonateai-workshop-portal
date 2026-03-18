@@ -12,6 +12,7 @@ export function initLectureDeck() {
   const trackId = deck.dataset.track;
   const slides = Array.from(deck.querySelectorAll('.lecture-slide'));
   const toggle = document.querySelector('[data-voice-toggle]');
+  const stopButton = document.querySelector('[data-voice-stop]');
   const audio = new Audio();
   let voiceEnabled = window.localStorage.getItem(VOICE_ENABLED_KEY) === 'true';
   let currentIndex = slides.findIndex((slide) => slide.classList.contains('is-active'));
@@ -79,6 +80,10 @@ export function initLectureDeck() {
     window.localStorage.setItem(VOICE_ENABLED_KEY, String(voiceEnabled));
     updateToggle();
     playCurrent(currentIndex);
+  });
+
+  stopButton?.addEventListener('click', () => {
+    stopAudio();
   });
 
   updateToggle();
