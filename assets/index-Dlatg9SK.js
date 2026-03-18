@@ -652,6 +652,10 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
               </div>
               <h1 class="section-title">${e.name}</h1>
               <p class="dashboard-subtitle">${e.summary}</p>
+              ${e.sheet.copyUrl?`<div class="workflow-primary-actions mt-3">
+                      <a class="btn btn-primary" href="${e.sheet.copyUrl}" target="_blank" rel="noopener noreferrer">Copy this sheet</a>
+                      <a class="btn btn-outline-light" href="${e.sheet.templateUrl}" target="_blank" rel="noopener noreferrer">Preview template</a>
+                    </div>`:""}
               <div class="sheet-meta-grid mt-3">
                 <div class="sheet-panel">
                   <div class="sheet-label">Sheet</div>
@@ -667,10 +671,6 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
                 <div class="kicker">Outcome</div>
                 <strong>${e.sheet.outcome}</strong>
               </div>
-              ${e.sheet.copyUrl?`<div class="workflow-primary-actions mt-3">
-                      <a class="btn btn-primary" href="${e.sheet.copyUrl}" target="_blank" rel="noopener noreferrer">Copy this sheet</a>
-                      <a class="btn btn-outline-light" href="${e.sheet.templateUrl}" target="_blank" rel="noopener noreferrer">Preview template</a>
-                    </div>`:""}
               <div class="column-grid mt-3">
                 ${e.sheet.columns.map(r=>`
                       <div class="column-pill">${r}</div>`).join("")}
