@@ -172,7 +172,12 @@ textarea {
 
 .hero-actions-grid {
   display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(180px, 1fr);
   gap: 0.8rem;
+  overflow-x: auto;
+  padding-bottom: 0.25rem;
+  scrollbar-width: none;
 }
 
 .quick-card {
@@ -242,8 +247,13 @@ textarea {
   margin-top: 1rem;
 }
 
+.stat-row--compact {
+  margin-top: 0;
+}
+
 .stat-panel {
   padding: 1rem;
+  min-width: 0;
 }
 
 .stat-heading,
@@ -262,6 +272,13 @@ textarea {
 .workflow-layout {
   grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.9fr);
   align-items: start;
+}
+
+.track-utility-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 320px);
+  gap: 1rem;
+  margin-bottom: 1rem;
 }
 
 .sheet-meta-grid {
@@ -372,6 +389,58 @@ textarea {
   gap: 0.85rem;
 }
 
+.sheet-menu-card {
+  padding: 0.35rem 0.55rem;
+}
+
+.sheet-menu summary,
+.map-details summary {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  cursor: pointer;
+  padding: 0.35rem;
+  font-weight: 700;
+}
+
+.sheet-menu summary::-webkit-details-marker,
+.map-details summary::-webkit-details-marker {
+  display: none;
+}
+
+.sheet-menu-icon {
+  display: inline-flex;
+  width: 30px;
+  height: 30px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.sheet-menu-list {
+  display: grid;
+  gap: 0.45rem;
+  padding: 0.5rem 0.2rem 0.2rem;
+}
+
+.sheet-menu-link {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 0.7rem 0.85rem;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.sheet-menu-number {
+  font-family: 'Space Grotesk', sans-serif;
+  color: var(--accent-soft);
+}
+
 .connector-row,
 .step-row {
   display: flex;
@@ -425,6 +494,43 @@ textarea {
   line-height: 1.55;
 }
 
+.prompt-template {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.45rem;
+  line-height: 1.85;
+}
+
+.prompt-text {
+  color: #edf2f7;
+}
+
+.inline-fill {
+  display: inline-block;
+  min-width: 9rem;
+  max-width: 100%;
+  width: 12rem;
+  border: 1px solid rgba(255, 214, 200, 0.22);
+  border-radius: 14px;
+  padding: 0.5rem 0.7rem;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text);
+  resize: none;
+  vertical-align: middle;
+  overflow: hidden;
+}
+
+.inline-fill.is-wide {
+  width: min(100%, 22rem);
+}
+
+.inline-fill:focus {
+  outline: none;
+  border-color: rgba(239, 131, 84, 0.44);
+  background: rgba(255, 255, 255, 0.06);
+}
+
 .sheet-panel,
 .sheet-outcome-card {
   border: 1px solid var(--line);
@@ -442,6 +548,40 @@ textarea {
   display: inline-flex;
   margin-bottom: 1rem;
   color: var(--accent-soft);
+}
+
+.map-shell {
+  padding-top: 0.55rem;
+}
+
+.map-console {
+  display: grid;
+  gap: 0.9rem;
+  padding-top: 0.55rem;
+}
+
+.map-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.map-info-panel {
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 0.85rem 0.95rem;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.map-info-title {
+  margin: 0.2rem 0 0.3rem;
+  font-size: 1.05rem;
+}
+
+.map-info-copy {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.55;
 }
 
 .btn-primary {
@@ -539,13 +679,16 @@ textarea {
   .workflow-layout,
   .track-grid,
   .workflow-grid,
-  .sheet-meta-grid,
-  .stat-row {
+  .sheet-meta-grid {
     grid-template-columns: 1fr;
   }
 
   .prompt-pack-card {
     position: static;
+  }
+
+  .track-utility-row {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -610,5 +753,32 @@ textarea {
 
   .workflow-graph {
     height: 260px;
+  }
+
+  .stat-row {
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(120px, 1fr);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .quick-card {
+    min-height: 92px;
+    padding: 0.9rem;
+  }
+
+  .sheet-menu-link {
+    padding: 0.75rem;
+  }
+
+  .inline-fill,
+  .inline-fill.is-wide {
+    width: 100%;
+  }
+
+  .prompt-template {
+    display: grid;
+    gap: 0.45rem;
+    line-height: 1.5;
   }
 }

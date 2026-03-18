@@ -26,19 +26,40 @@ export function renderTrackPage(trackId) {
           </div>
         </div>
 
-        <div class="stat-row">
-          <div class="stat-panel">
-            <div class="stat-heading">${track.lectureSlides.length}</div>
-            <div class="stat-caption">Lecture slides</div>
+        <div class="track-utility-row">
+          <div class="stat-row stat-row--compact">
+            <div class="stat-panel">
+              <div class="stat-heading">${track.lectureSlides.length}</div>
+              <div class="stat-caption">Lecture slides</div>
+            </div>
+            <div class="stat-panel">
+              <div class="stat-heading">${track.workflows.length}</div>
+              <div class="stat-caption">Sheet kits</div>
+            </div>
+            <div class="stat-panel">
+              <div class="stat-heading">3</div>
+              <div class="stat-caption">Core connectors</div>
+            </div>
           </div>
-          <div class="stat-panel">
-            <div class="stat-heading">${track.workflows.length}</div>
-            <div class="stat-caption">Sheet kits</div>
-          </div>
-          <div class="stat-panel">
-            <div class="stat-heading">3</div>
-            <div class="stat-caption">Core connectors</div>
-          </div>
+          <section class="module-card sheet-menu-card">
+            <details class="sheet-menu">
+              <summary>
+                <span class="sheet-menu-icon">☰</span>
+                <span>Open sheet menu</span>
+              </summary>
+              <div class="sheet-menu-list">
+                ${track.workflows
+                  .map(
+                    (workflow, index) => `
+                      <a class="sheet-menu-link" href="#/workflows/${workflow.slug}" data-nav="/workflows/${workflow.slug}">
+                        <span class="sheet-menu-number">0${index + 1}</span>
+                        <span>${workflow.sheet.title}</span>
+                      </a>`,
+                  )
+                  .join('')}
+              </div>
+            </details>
+          </section>
         </div>
 
         <div class="dashboard-grid">
@@ -82,12 +103,27 @@ export function renderTrackPage(trackId) {
                   .join('')}
               </div>
             </section>
-            <section class="module-card">
-              <div class="card-topline">
-                <span class="status-pill">Graph view</span>
-              </div>
-              <h2 class="section-title">Track map</h2>
-              <div id="workflow-graph" class="workflow-graph"></div>
+            <section class="module-card map-shell">
+              <details class="map-details">
+                <summary>
+                  <span>Track map</span>
+                  <span class="count-pill">Tap to expand</span>
+                </summary>
+                <div class="map-console">
+                  <div class="map-toolbar">
+                    <button class="btn btn-sm btn-outline-light" type="button" data-graph-focus="reset">Fit</button>
+                    <button class="btn btn-sm btn-outline-light" type="button" data-graph-focus="lecture">Lecture</button>
+                    <button class="btn btn-sm btn-outline-light" type="button" data-graph-focus="quest">Quest</button>
+                    <button class="btn btn-sm btn-outline-light" type="button" data-graph-focus="reflection">Reflection</button>
+                  </div>
+                  <div class="map-info-panel">
+                    <div class="kicker" data-graph-info-kicker>Track map</div>
+                    <h3 class="map-info-title" data-graph-info-title>Lecture -> quest -> sheet kit -> reflection</h3>
+                    <p class="map-info-copy" data-graph-info-copy>Tap a node to see what it does. Use the controls to focus on a stage of the system instead of staring at the whole graph at once.</p>
+                  </div>
+                  <div id="workflow-graph" class="workflow-graph"></div>
+                </div>
+              </details>
             </section>
           </div>
         </div>

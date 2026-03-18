@@ -6,6 +6,44 @@ export function initWorkflowGraph(track) {
     return;
   }
 
+  const infoKicker = document.querySelector('[data-graph-info-kicker]');
+  const infoTitle = document.querySelector('[data-graph-info-title]');
+  const infoCopy = document.querySelector('[data-graph-info-copy]');
+
+  function setInfo(nodeId) {
+    if (!infoTitle || !infoCopy || !infoKicker) {
+      return;
+    }
+
+    if (nodeId === 'lecture') {
+      infoKicker.textContent = 'Lecture';
+      infoTitle.textContent = 'Concept stack before the tools';
+      infoCopy.textContent = 'Use the lecture deck to ground graph thinking, systems thinking, and why the sheet exists before you start copying prompts.';
+      return;
+    }
+
+    if (nodeId === 'quest') {
+      infoKicker.textContent = 'Quest';
+      infoTitle.textContent = track.quest.title;
+      infoCopy.textContent = track.quest.summary;
+      return;
+    }
+
+    if (nodeId === 'reflection') {
+      infoKicker.textContent = 'Reflection';
+      infoTitle.textContent = 'Feedback loop';
+      infoCopy.textContent = 'Reflection is where the system compounds. Debrief the sheet, detect patterns, and rewrite the next cycle.';
+      return;
+    }
+
+    const workflow = track.workflows.find((item) => item.slug === nodeId);
+    if (workflow) {
+      infoKicker.textContent = 'Sheet kit';
+      infoTitle.textContent = workflow.sheet.title;
+      infoCopy.textContent = `${workflow.summary} Best use: ${workflow.useCase}`;
+    }
+  }
+
   const elements = [
     {data: {id: 'lecture', label: 'Lecture'}},
     {data: {id: 'quest', label: 'Quest'}},
@@ -21,7 +59,7 @@ export function initWorkflowGraph(track) {
     ]),
   ];
 
-  cytoscape({
+  const cy = cytoscape({
     container: root,
     elements,
     layout: {
@@ -66,4 +104,39 @@ export function initWorkflowGraph(track) {
       },
     ],
   });
+
+  function focusNode(nodeId) {
+    const node = cy.getElementById(nodeId);
+    if (!node || node.empty()) {
+      cy.fit(undefined, 30);
+      return;
+    }
+
+    cy.animate({
+      fit: {
+        eles: node.closedNeighborhood(),
+        padding: 40,
+      },
+      duration: 350,
+    });
+    setInfo(nodeId);
+  }
+
+  cy.on('tap', 'node', (event) => {
+    focusNode(event.target.id());
+  });
+
+  document.querySelectorAll('[data-graph-focus]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const target = button.getAttribute('data-graph-focus');
+      if (target === 'reset') {
+        cy.fit(undefined, 30);
+        setInfo('lecture');
+        return;
+      }
+      focusNode(target);
+    });
+  });
+
+  setInfo('lecture');
 }
