@@ -290,7 +290,7 @@ textarea {
 
 .workflow-stack {
   display: grid;
-  gap: 1rem;
+  gap: 1.35rem;
 }
 
 .track-utility-row {
@@ -358,11 +358,12 @@ textarea {
 }
 
 .lecture-card {
-  min-height: 90vh;
+  min-height: 65vh;
   display: grid;
   grid-template-rows: auto auto minmax(0, 1fr) auto;
   align-items: start;
   padding: 1rem 1.05rem;
+  margin-bottom: 0.35rem;
 }
 
 .lecture-deck {
@@ -512,18 +513,18 @@ textarea {
   }
 
   .lecture-slide h3 {
-    font-size: clamp(2rem, 3vw, 3.35rem);
+    font-size: clamp(1.7rem, 2.25vw, 2.45rem);
   }
 
   .slide-lead {
-    font-size: 1.18rem;
+    font-size: 1.06rem;
   }
 
   .lecture-copy p,
   .slide-point-list li,
   .slide-activity-prompt,
   .slide-activity-list li {
-    font-size: 1.02rem;
+    font-size: 0.96rem;
   }
 }
 
