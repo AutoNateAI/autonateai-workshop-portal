@@ -1,8 +1,5 @@
 import {workflowIndex} from '../data/workflows.js';
-import {tracks} from '../data/tracks.js';
-import {renderLectureDeck} from '../components/LectureDeck.js';
 import {renderPromptCard} from '../components/PromptCard.js';
-import {initLectureDeck} from '../features/lectureDeck.js';
 import {initCopyPrompt} from '../features/copyPrompt.js';
 
 export function renderWorkflowPage(slug) {
@@ -12,18 +9,14 @@ export function renderWorkflowPage(slug) {
   }
 
   queueMicrotask(() => {
-    initLectureDeck();
     initCopyPrompt();
   });
-
-  const track = tracks[workflow.trackId];
 
   return `
     <section class="dashboard-page">
       <div class="container-xl">
         <a class="back-link" href="#/tracks/${workflow.trackId}" data-nav="/tracks/${workflow.trackId}">Back to ${workflow.trackId} dashboard</a>
         <div class="workflow-stack">
-          ${renderLectureDeck(track)}
           ${renderPromptCard(workflow)}
           <section class="module-card workflow-sheet-card">
             <div class="card-topline">
