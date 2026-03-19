@@ -17,7 +17,6 @@ export function renderWorkflowPage(slug) {
       <div class="container-xl">
         <a class="back-link" href="#/tracks/${workflow.trackId}" data-nav="/tracks/${workflow.trackId}">Back to ${workflow.trackId} dashboard</a>
         <div class="workflow-stack">
-          ${renderPromptCard(workflow)}
           <section class="module-card workflow-sheet-card">
             <div class="card-topline">
               <span class="status-pill">Sheet design</span>
@@ -57,6 +56,7 @@ export function renderWorkflowPage(slug) {
                 .join('')}
             </div>
           </section>
+          ${renderPromptCard(workflow)}
         </div>
       </div>
     </section>
