@@ -3,6 +3,7 @@ import {voiceovers} from '../data/voiceovers.js';
 
 const VOICE_ENABLED_KEY = 'autonateai-workshop-voice-enabled';
 const AUTO_ADVANCE_DELAY_MS = 3000;
+const ASSET_BASE = (import.meta.env.BASE_URL || '/').replace(/\/$/, '');
 let activeCleanup = null;
 
 export function teardownLectureDeck() {
@@ -99,8 +100,9 @@ export function initLectureDeck() {
       return;
     }
 
+    const resolvedSrc = src.startsWith('/') ? `${ASSET_BASE}${src}` : src;
     audio.src = '';
-    audio.src = src;
+    audio.src = resolvedSrc;
     audio.load();
     audio.play().catch(() => {});
   }
