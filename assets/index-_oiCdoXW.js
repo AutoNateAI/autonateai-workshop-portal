@@ -309,7 +309,6 @@
       <div class="container-xl">
         <a class="back-link" href="#/tracks/${e.trackId}" data-nav="/tracks/${e.trackId}">Back to ${e.trackId} dashboard</a>
         <div class="workflow-stack">
-          ${_u(e)}
           <section class="module-card workflow-sheet-card">
             <div class="card-topline">
               <span class="status-pill">Sheet design</span>
@@ -341,6 +340,7 @@
                     <div class="column-pill">${s}</div>`).join("")}
             </div>
           </section>
+          ${_u(e)}
         </div>
       </div>
     </section>
