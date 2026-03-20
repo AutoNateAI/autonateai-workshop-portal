@@ -12,7 +12,7 @@ export function renderAppShell(content, currentPath, user) {
         <div class="container-xl d-flex align-items-center justify-content-between gap-3">
           <div>
             <div class="brand-mark">AutoNateAI Workshop</div>
-            <div class="brand-subtle">Member dashboard</div>
+            <div class="brand-subtle">${user?.preview ? 'Portal preview' : 'Member dashboard'}</div>
           </div>
           ${
             user
@@ -20,8 +20,8 @@ export function renderAppShell(content, currentPath, user) {
             <div class="topbar-user">
               <div class="user-badge">${getUserInitials(user)}</div>
               <div class="topbar-meta">
-                <div class="topbar-email">${user.email || 'Signed in'}</div>
-                <button class="topbar-link" type="button" data-sign-out>Sign out</button>
+                <div class="topbar-email">${user.preview ? 'Live product preview' : user.email || 'Signed in'}</div>
+                ${user.preview ? '' : '<button class="topbar-link" type="button" data-sign-out>Sign out</button>'}
               </div>
             </div>`
               : ''

@@ -20,6 +20,12 @@ const authState = {
   user: null,
 };
 
+const previewUser = {
+  displayName: 'Portal Preview',
+  email: 'preview@autonateai.com',
+  preview: true,
+};
+
 const routes = {
   '/': () => renderHomePage(authState.user),
   '/login': renderLoginPage,
@@ -33,6 +39,22 @@ function render() {
 
   const path = window.location.hash.replace('#', '') || '/';
   const workflowMatch = path.match(/^\/workflows\/([^/]+)$/);
+  const previewTrackMatch = path.match(/^\/preview\/(student|researcher)$/);
+  const previewWorkflowMatch = path.match(/^\/preview\/workflows\/([^/]+)$/);
+
+  if (previewTrackMatch || previewWorkflowMatch) {
+    const previewPath = previewTrackMatch ? `/tracks/${previewTrackMatch[1]}` : path;
+    const pageContent = previewTrackMatch
+      ? renderTrackPage(previewTrackMatch[1])
+      : renderWorkflowPage(previewWorkflowMatch[1]);
+
+    app.innerHTML = renderAppShell(pageContent, previewPath, previewUser);
+    document.title = 'AutoNateAI Workshop Preview';
+    bindGlobalActions();
+    initAuthUi();
+    window.scrollTo(0, 0);
+    return;
+  }
 
   if (!authState.ready) {
     app.innerHTML = `<div class="auth-shell"><div class="auth-card"><div class="brand-mark mb-2">AutoNateAI Workshop</div><div class="auth-title">Loading dashboard...</div></div></div>`;
