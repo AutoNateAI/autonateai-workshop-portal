@@ -7,9 +7,10 @@ import {renderTrackPage} from './pages/trackPage.js';
 import {renderWorkflowPage} from './pages/workflowPage.js';
 import {renderSetupPage} from './pages/setupPage.js';
 import {renderLoginPage} from './pages/loginPage.js';
+import {renderPasswordSetupPage} from './pages/passwordSetupPage.js';
 import {initRouter, navigateTo} from './lib/router.js';
 import {initFirebaseClient} from './lib/firebase.js';
-import {observeAuthState, signOutCurrentUser} from './lib/auth.js';
+import {observeAuthState, resolvePortalSession, signOutCurrentUser} from './lib/auth.js';
 import {initAuthUi} from './features/authUi.js';
 import {teardownLectureDeck} from './features/lectureDeck.js';
 
@@ -18,6 +19,9 @@ const app = document.querySelector('#app');
 const authState = {
   ready: false,
   user: null,
+  hasAccess: false,
+  mustChangePassword: false,
+  message: '',
 };
 
 const previewUser = {
@@ -29,6 +33,7 @@ const previewUser = {
 const routes = {
   '/': () => renderHomePage(authState.user),
   '/login': renderLoginPage,
+  '/password-setup': () => renderPasswordSetupPage(authState.user),
   '/setup': renderSetupPage,
   '/tracks/student': () => renderTrackPage('student'),
   '/tracks/researcher': () => renderTrackPage('researcher'),
@@ -66,6 +71,21 @@ function render() {
     return;
   }
 
+  if (authState.user && !authState.hasAccess && path !== '/login') {
+    navigateTo('/login');
+    return;
+  }
+
+  if (authState.user && authState.mustChangePassword && path !== '/password-setup') {
+    navigateTo('/password-setup');
+    return;
+  }
+
+  if (authState.user && !authState.mustChangePassword && path === '/password-setup') {
+    navigateTo('/');
+    return;
+  }
+
   if (authState.user && path === '/login') {
     navigateTo('/');
     return;
@@ -73,7 +93,9 @@ function render() {
 
   const pageContent = workflowMatch
     ? renderWorkflowPage(workflowMatch[1])
-    : (routes[path] || (() => renderHomePage(authState.user)))();
+    : path === '/login'
+      ? renderLoginPage(authState.message)
+      : (routes[path] || (() => renderHomePage(authState.user)))();
 
   app.innerHTML = renderAppShell(pageContent, path, authState.user);
   document.title = 'AutoNateAI Workshop Dashboard';
@@ -103,10 +125,48 @@ function bindGlobalActions() {
 }
 
 initFirebaseClient();
-observeAuthState((user) => {
-  authState.user = user;
-  authState.ready = true;
+observeAuthState(async (user) => {
+  authState.ready = false;
   render();
+
+  if (!user) {
+    authState.user = null;
+    authState.hasAccess = false;
+    authState.mustChangePassword = false;
+    authState.message = '';
+    authState.ready = true;
+    render();
+    return;
+  }
+
+  try {
+    const session = await resolvePortalSession(user);
+    if (!session.hasAccess) {
+      await signOutCurrentUser();
+      authState.user = null;
+      authState.hasAccess = false;
+      authState.mustChangePassword = false;
+      authState.message = session.message || 'No paid portal access found for this email.';
+      authState.ready = true;
+      render();
+      return;
+    }
+
+    authState.user = user;
+    authState.hasAccess = true;
+    authState.mustChangePassword = session.mustChangePassword;
+    authState.message = '';
+    authState.ready = true;
+    render();
+  } catch (error) {
+    await signOutCurrentUser();
+    authState.user = null;
+    authState.hasAccess = false;
+    authState.mustChangePassword = false;
+    authState.message = error instanceof Error ? error.message : 'Unable to load your portal session.';
+    authState.ready = true;
+    render();
+  }
 });
 
 initRouter(render);
