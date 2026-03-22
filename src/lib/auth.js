@@ -15,6 +15,7 @@ const claimAccessUrl =
   'https://claimportalaccessbyemail-4qinfaeidq-uc.a.run.app';
 const completePasswordSetupUrl =
   'https://completeportalpasswordsetup-4qinfaeidq-uc.a.run.app';
+const allowedCourseProductIds = new Set(['ai-first-student', 'ai-first-researcher']);
 
 export function observeAuthState(callback) {
   const {auth} = getFirebaseServices();
@@ -69,7 +70,7 @@ async function readUserState(uid) {
   const librarySnap = await getDocs(collection(db, 'users', uid, 'library'));
   const library = librarySnap.docs
     .map((docSnap) => ({id: docSnap.id, ...docSnap.data()}))
-    .filter((entry) => entry.accessGranted);
+    .filter((entry) => entry.accessGranted && allowedCourseProductIds.has(entry.productId));
 
   return {
     profile: userSnap.exists() ? userSnap.data() : {},

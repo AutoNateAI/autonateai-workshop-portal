@@ -3,7 +3,7 @@ import {tracks} from '../data/tracks.js';
 
 export function renderHomePage(user, session = null) {
   const firstName = user?.displayName?.split(' ')[0] || user?.email?.split('@')[0] || 'Builder';
-  const allowedTrackIds = session?.allowedTrackIds?.length ? session.allowedTrackIds : Object.keys(tracks);
+  const allowedTrackIds = session?.allowedTrackIds ?? [];
   const availableTracks = allowedTrackIds.map((trackId) => tracks[trackId]).filter(Boolean);
   const workflowCount = availableTracks.reduce((total, track) => total + track.workflows.length, 0);
   const promptCount = workflowCount * 3;
