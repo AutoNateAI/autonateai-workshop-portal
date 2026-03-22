@@ -12,9 +12,9 @@ import {getFirebaseServices} from './firebase.js';
 
 const provider = new GoogleAuthProvider();
 const claimAccessUrl =
-  'https://us-central1-autonateai-learning-hub.cloudfunctions.net/claimPortalAccessByEmail';
+  'https://claimportalaccessbyemail-4qinfaeidq-uc.a.run.app';
 const completePasswordSetupUrl =
-  'https://us-central1-autonateai-learning-hub.cloudfunctions.net/completePortalPasswordSetup';
+  'https://completeportalpasswordsetup-4qinfaeidq-uc.a.run.app';
 
 export function observeAuthState(callback) {
   const {auth} = getFirebaseServices();

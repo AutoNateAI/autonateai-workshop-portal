@@ -3,8 +3,8 @@ import './styles/app.css';
 
 import {renderAppShell} from './components/AppShell.js';
 import {renderHomePage} from './pages/homePage.js';
-import {renderTrackPage} from './pages/trackPage.js';
-import {renderWorkflowPage} from './pages/workflowPage.js';
+import {renderLockedTrackPage, renderTrackPage} from './pages/trackPage.js';
+import {renderLockedWorkflowPage, renderWorkflowPage} from './pages/workflowPage.js';
 import {renderSetupPage} from './pages/setupPage.js';
 import {renderLoginPage} from './pages/loginPage.js';
 import {renderPasswordSetupPage} from './pages/passwordSetupPage.js';
@@ -22,6 +22,7 @@ const authState = {
   hasAccess: false,
   mustChangePassword: false,
   message: '',
+  allowedTrackIds: [],
 };
 
 const previewUser = {
@@ -30,13 +31,17 @@ const previewUser = {
   preview: true,
 };
 
+const previewSession = {
+  allowedTrackIds: ['student', 'researcher'],
+};
+
 const routes = {
-  '/': () => renderHomePage(authState.user),
+  '/': () => renderHomePage(authState.user, authState),
   '/login': renderLoginPage,
   '/password-setup': () => renderPasswordSetupPage(authState.user),
   '/setup': renderSetupPage,
-  '/tracks/student': () => renderTrackPage('student'),
-  '/tracks/researcher': () => renderTrackPage('researcher'),
+  '/tracks/student': () => renderTrackForUser('student'),
+  '/tracks/researcher': () => renderTrackForUser('researcher'),
 };
 
 function render() {
@@ -53,7 +58,7 @@ function render() {
       ? renderTrackPage(previewTrackMatch[1])
       : renderWorkflowPage(previewWorkflowMatch[1]);
 
-    app.innerHTML = renderAppShell(pageContent, previewPath, previewUser);
+    app.innerHTML = renderAppShell(pageContent, previewPath, previewUser, previewSession);
     document.title = 'AutoNateAI Workshop Preview';
     bindGlobalActions();
     initAuthUi();
@@ -92,12 +97,12 @@ function render() {
   }
 
   const pageContent = workflowMatch
-    ? renderWorkflowPage(workflowMatch[1])
+    ? renderWorkflowForPath(workflowMatch[1])
     : path === '/login'
       ? renderLoginPage(authState.message)
       : (routes[path] || (() => renderHomePage(authState.user)))();
 
-  app.innerHTML = renderAppShell(pageContent, path, authState.user);
+  app.innerHTML = renderAppShell(pageContent, path, authState.user, authState);
   document.title = 'AutoNateAI Workshop Dashboard';
   bindGlobalActions();
   initAuthUi();
@@ -134,6 +139,7 @@ observeAuthState(async (user) => {
     authState.hasAccess = false;
     authState.mustChangePassword = false;
     authState.message = '';
+    authState.allowedTrackIds = [];
     authState.ready = true;
     render();
     return;
@@ -147,6 +153,7 @@ observeAuthState(async (user) => {
       authState.hasAccess = false;
       authState.mustChangePassword = false;
       authState.message = session.message || 'No paid portal access found for this email.';
+      authState.allowedTrackIds = [];
       authState.ready = true;
       render();
       return;
@@ -156,6 +163,7 @@ observeAuthState(async (user) => {
     authState.hasAccess = true;
     authState.mustChangePassword = session.mustChangePassword;
     authState.message = '';
+    authState.allowedTrackIds = deriveAllowedTrackIds(session.library);
     authState.ready = true;
     render();
   } catch (error) {
@@ -164,6 +172,7 @@ observeAuthState(async (user) => {
     authState.hasAccess = false;
     authState.mustChangePassword = false;
     authState.message = error instanceof Error ? error.message : 'Unable to load your portal session.';
+    authState.allowedTrackIds = [];
     authState.ready = true;
     render();
   }
@@ -171,3 +180,61 @@ observeAuthState(async (user) => {
 
 initRouter(render);
 render();
+
+function deriveAllowedTrackIds(library = []) {
+  const trackIds = new Set();
+  for (const entry of library) {
+    if (entry.productId === 'ai-first-student') {
+      trackIds.add('student');
+    }
+    if (entry.productId === 'ai-first-researcher') {
+      trackIds.add('researcher');
+    }
+  }
+  return [...trackIds];
+}
+
+function renderWorkflowForPath(slug) {
+  const workflowHtml = renderWorkflowPage(slug);
+  const workflowTrackId = slug.includes('source') || slug.includes('claim') || slug.includes('theme') || slug.includes('gap') || slug.includes('lit-review') || slug.includes('research-narrative')
+    ? 'researcher'
+    : null;
+  const inferredTrackId = workflowTrackId ?? inferTrackIdFromSlug(slug);
+  if (inferredTrackId && !authState.allowedTrackIds.includes(inferredTrackId)) {
+    return renderLockedWorkflowPage(inferredTrackId);
+  }
+  return workflowHtml;
+}
+
+function renderTrackForUser(trackId) {
+  if (!authState.allowedTrackIds.includes(trackId)) {
+    return renderLockedTrackPage();
+  }
+  return renderTrackPage(trackId);
+}
+
+function inferTrackIdFromSlug(slug) {
+  const studentSlugs = new Set([
+    'daily-time-grid',
+    'assignment-sprint-planner',
+    'reading-capture-matrix',
+    'study-heatmap-board',
+    'paper-source-matrix',
+    'day-debrief-lab',
+  ]);
+  const researcherSlugs = new Set([
+    'source-intake-sheet',
+    'claim-graph-matrix',
+    'theme-cluster-board',
+    'gap-radar-sheet',
+    'lit-review-builder',
+    'research-narrative-board',
+  ]);
+  if (studentSlugs.has(slug)) {
+    return 'student';
+  }
+  if (researcherSlugs.has(slug)) {
+    return 'researcher';
+  }
+  return null;
+}

@@ -1,10 +1,17 @@
-export function renderAppShell(content, currentPath, user) {
-  const navItems = [
-    {href: '/', label: 'Dashboard'},
-    {href: '/tracks/student', label: 'Student'},
-    {href: '/tracks/researcher', label: 'Research'},
-    {href: '/setup', label: 'Setup'},
-  ];
+function getNavItems(session) {
+  const navItems = [{href: '/', label: 'Dashboard'}];
+  if (session?.allowedTrackIds?.includes('student')) {
+    navItems.push({href: '/tracks/student', label: 'Student'});
+  }
+  if (session?.allowedTrackIds?.includes('researcher')) {
+    navItems.push({href: '/tracks/researcher', label: 'Research'});
+  }
+  navItems.push({href: '/setup', label: 'Setup'});
+  return navItems;
+}
+
+export function renderAppShell(content, currentPath, user, session = null) {
+  const navItems = getNavItems(session);
 
   return `
     <div class="dashboard-shell">
