@@ -1,17 +1,14 @@
 function getNavItems(session) {
-  const navItems = [{href: '/', label: 'Dashboard'}];
+  const navItems = [];
   if (session?.allowedTrackIds?.includes('student')) {
-    navItems.push({href: '/tracks/student', label: 'Student'});
+    navItems.push({href: '/portal', label: 'Portal'});
   }
-  if (session?.allowedTrackIds?.includes('researcher')) {
-    navItems.push({href: '/tracks/researcher', label: 'Research'});
-  }
-  navItems.push({href: '/setup', label: 'Setup'});
   return navItems;
 }
 
 export function renderAppShell(content, currentPath, user, session = null) {
   const navItems = getNavItems(session);
+  const showNavigation = navItems.length > 0;
 
   return `
     <div class="dashboard-shell">
@@ -36,15 +33,19 @@ export function renderAppShell(content, currentPath, user, session = null) {
         </div>
       </header>
       <div class="app-body">
-        <aside class="side-rail">
-          <div class="side-rail-inner">
-            ${navItems.map((item) => sideRailLink(item, currentPath)).join('')}
-          </div>
-        </aside>
+        ${
+          showNavigation
+            ? `<aside class="side-rail">
+                <div class="side-rail-inner">
+                  ${navItems.map((item) => sideRailLink(item, currentPath)).join('')}
+                </div>
+              </aside>`
+            : ''
+        }
         <main class="main-stage">${content}</main>
       </div>
       ${
-        user
+        user && showNavigation
           ? `
         <nav class="mobile-dock">
           ${navItems.map((item) => mobileDockLink(item, currentPath)).join('')}
