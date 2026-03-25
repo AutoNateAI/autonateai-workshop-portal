@@ -491,10 +491,6 @@ textarea {
   display: grid;
   align-content: start;
   gap: 0.7rem;
-  max-height: clamp(420px, 72vh, 640px);
-  overflow-y: auto;
-  padding-right: 0.25rem;
-  overscroll-behavior: contain;
 }
 
 .slide-eyebrow {
@@ -762,6 +758,10 @@ textarea {
 
   .lecture-copy {
     gap: 0.6rem;
+    max-height: clamp(280px, 31vw, 420px);
+    overflow-y: auto;
+    padding-right: 0.25rem;
+    overscroll-behavior: contain;
   }
 }
 
@@ -1518,9 +1518,8 @@ textarea {
   }
 
   .slide-visual-region--storyboard .slide-storyboard-frame {
-    object-fit: contain;
-    object-position: top center;
-    background: transparent;
+    object-fit: cover;
+    object-position: center center;
   }
 
   .slide-visual-region--storyboard .slide-storyboard-card {

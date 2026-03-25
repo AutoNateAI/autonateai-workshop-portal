@@ -163,10 +163,27 @@ export function initLectureDeck() {
     return slide?.querySelectorAll('[data-storyboard-frame]').length || 0;
   }
 
+  function scrollActiveCaptionIntoView(slide, index) {
+    const activeCaption = slide?.querySelector(`[data-story-caption="${index}"]`);
+    activeCaption?.scrollIntoView({
+      block: 'nearest',
+      behavior: 'smooth',
+    });
+  }
+
   function updateStoryCaptions(slide, index) {
+    const previousIndex = Number(slide?.dataset.activeStoryCaption ?? -1);
     slide?.querySelectorAll('[data-story-caption]').forEach((caption) => {
       caption.classList.toggle('is-active', Number(caption.dataset.storyCaption) === index);
     });
+
+    if (slide) {
+      slide.dataset.activeStoryCaption = String(index);
+    }
+
+    if (index !== previousIndex) {
+      scrollActiveCaptionIntoView(slide, index);
+    }
   }
 
   function setStoryboardFrame(slide, index) {
