@@ -2,7 +2,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/app.css';
 
 import {renderAppShell} from './components/AppShell.js';
-import {renderLandingPage} from './pages/landingPage.js';
 import {renderHomePage} from './pages/homePage.js';
 import {renderLockedTrackPage, renderTrackPage} from './pages/trackPage.js';
 import {renderLockedWorkflowPage, renderWorkflowPage} from './pages/workflowPage.js';
@@ -37,8 +36,7 @@ const previewSession = {
 };
 
 const routes = {
-  '/': () => renderLandingPage(authState.user),
-  '/portal': () => renderPortalPage(),
+  '/': () => renderHomePage(authState.user, authState),
   '/login': renderLoginPage,
   '/password-setup': () => renderPasswordSetupPage(authState.user),
   '/setup': renderSetupPage,
@@ -73,12 +71,12 @@ function render() {
     return;
   }
 
-  if (!authState.user && isProtectedPath(path)) {
+  if (!authState.user && path !== '/login') {
     navigateTo('/login');
     return;
   }
 
-  if (authState.user && !authState.hasAccess && path !== '/login' && path !== '/') {
+  if (authState.user && !authState.hasAccess && path !== '/login') {
     navigateTo('/login');
     return;
   }
@@ -94,7 +92,7 @@ function render() {
   }
 
   if (authState.user && path === '/login') {
-    navigateTo('/portal');
+    navigateTo('/');
     return;
   }
 
@@ -104,16 +102,8 @@ function render() {
       ? renderLoginPage(authState.message)
       : (routes[path] || (() => renderHomePage(authState.user)))();
 
-  if (path === '/' || path === '/login' || path === '/password-setup') {
-    app.innerHTML = pageContent;
-    document.title =
-      path === '/'
-        ? 'AutoNateAI | Student Transformation'
-        : 'AutoNateAI Workshop Portal';
-  } else {
-    app.innerHTML = renderAppShell(pageContent, path, authState.user, authState);
-    document.title = 'AutoNateAI Workshop Dashboard';
-  }
+  app.innerHTML = renderAppShell(pageContent, path, authState.user, authState);
+  document.title = 'AutoNateAI Workshop Dashboard';
   bindGlobalActions();
   initAuthUi();
   window.scrollTo(0, 0);
@@ -134,20 +124,7 @@ function bindGlobalActions() {
   document.querySelectorAll('[data-sign-out]').forEach((button) => {
     button.addEventListener('click', async () => {
       await signOutCurrentUser();
-      navigateTo('/');
-    });
-  });
-
-  document.querySelectorAll('[data-scroll-target]').forEach((button) => {
-    button.addEventListener('click', () => {
-      const targetId = button.getAttribute('data-scroll-target');
-      if (!targetId) {
-        return;
-      }
-      document.getElementById(targetId)?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-      });
+      navigateTo('/login');
     });
   });
 }
@@ -234,20 +211,6 @@ function renderTrackForUser(trackId) {
     return renderLockedTrackPage();
   }
   return renderTrackPage(trackId);
-}
-
-function renderPortalPage() {
-  if (authState.allowedTrackIds.includes('student')) {
-    return renderTrackPage('student');
-  }
-  if (authState.allowedTrackIds[0]) {
-    return renderTrackPage(authState.allowedTrackIds[0]);
-  }
-  return renderHomePage(authState.user, authState);
-}
-
-function isProtectedPath(path) {
-  return !['/', '/login'].includes(path);
 }
 
 function inferTrackIdFromSlug(slug) {

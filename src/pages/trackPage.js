@@ -61,7 +61,7 @@ export function renderLockedTrackPage() {
           </div>
           <h1 class="section-title">This track is not in your purchase.</h1>
           <p class="dashboard-subtitle">Use the dashboard to open the course you bought. If this looks wrong, sign out and sign back in with the paid email.</p>
-          <a class="btn btn-primary mt-3" href="#/portal" data-nav="/portal">Back to portal</a>
+          <a class="btn btn-primary mt-3" href="#/" data-nav="/">Back to dashboard</a>
         </section>
       </div>
     </section>
