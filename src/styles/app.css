@@ -1364,7 +1364,6 @@ textarea {
     aspect-ratio: 16 / 9;
     min-height: 0;
     height: auto;
-    max-height: 60vh;
   }
 
   .slide-visual-region--storyboard .slide-storyboard-frame {
