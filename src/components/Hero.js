@@ -15,9 +15,9 @@ export function renderHero({eyebrow, title, body, primary, secondary}) {
           <div class="col-12 col-lg-5">
             <div class="hero-panel glass-panel">
               <div class="hero-stack">
-                <div class="stat-chip">Mini lecture</div>
+                <div class="stat-chip">Story deck</div>
                 <div class="stat-chip">Quest</div>
-                <div class="stat-chip">6 AI workflows</div>
+                <div class="stat-chip">Thinking Systems</div>
                 <div class="stat-chip">Reflection loop</div>
               </div>
               <div id="hero-slides" class="slide-stack mt-4"></div>

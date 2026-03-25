@@ -1,0 +1,24 @@
+{
+  "model": "gpt-image-1.5",
+  "size": "1024x1024",
+  "quality": "high",
+  "fidelity": "high",
+  "concurrency": 5,
+  "images": [
+    {
+      "prompt": "Marques, Indian 18-year-old young adult high school senior, warm brown skin, thick dark hair with a clean modern shape-up, expressive grin, athletic lean build, fresh layered school fit with a clean jacket over a fitted tee, backpack, charismatic and slightly reckless energy, character anchor portrait, clean neutral background, high-fidelity animated graphic-novel storybook illustration, bright luminous lighting, richer highlights, emotionally specific facial acting, stronger scene-to-scene continuity, dynamic but readable action, premium family-film look, captivating emotional realism, square composition, NO text, NO letters, NO words",
+      "output": "/home/nate/autonateai-workspace/worktrees/autonateai-workshop-portal-v1-story-thinking-systems-b/public/img/storyboards/student/character-marquues.png",
+      "references": []
+    },
+    {
+      "prompt": "Tammye, Asian 18-year-old young adult high school senior, warm light-brown skin, long sleek dark hair, intense thoughtful eyes, denim jacket over a maroon sweater, notebooks and laptop in hand, focused and emotionally sharp, character anchor portrait, clean neutral background, high-fidelity animated graphic-novel storybook illustration, bright luminous lighting, richer highlights, emotionally specific facial acting, stronger scene-to-scene continuity, dynamic but readable action, premium family-film look, captivating emotional realism, square composition, NO text, NO letters, NO words",
+      "output": "/home/nate/autonateai-workspace/worktrees/autonateai-workshop-portal-v1-story-thinking-systems-b/public/img/storyboards/student/character-tammye.png",
+      "references": []
+    },
+    {
+      "prompt": "Nate, cool Black 18-year-old young adult high school senior friend, rich brown skin, nappy afro that sticks upward with a few curls falling down, sharp hairline, blue-tinted buff-style glasses with gold arms, crisp button-up shirt, slacks, brown penny loafers, amused half-smile, always noticing patterns in the group and calling them out with wit, character anchor portrait, clean neutral background, high-fidelity animated graphic-novel storybook illustration, bright luminous lighting, richer highlights, emotionally specific facial acting, stronger scene-to-scene continuity, dynamic but readable action, premium family-film look, captivating emotional realism, square composition, NO text, NO letters, NO words",
+      "output": "/home/nate/autonateai-workspace/worktrees/autonateai-workshop-portal-v1-story-thinking-systems-b/public/img/storyboards/student/character-nate.png",
+      "references": []
+    }
+  ]
+}

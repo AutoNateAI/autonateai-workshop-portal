@@ -15,7 +15,7 @@ export function renderHomePage(user, session = null) {
           <div class="hero-copy-wrap">
             <div class="kicker">Dashboard</div>
             <h1 class="dashboard-title">Welcome back, ${firstName}.</h1>
-            <p class="dashboard-subtitle">Open your track, grab the right sheet, and run the prompt pack straight into ChatGPT.</p>
+            <p class="dashboard-subtitle">Open your track, grab the right sheet, and run the Thinking System straight into ChatGPT.</p>
           </div>
           <div class="hero-actions-grid">
             ${allowedTrackIds.includes('student')
