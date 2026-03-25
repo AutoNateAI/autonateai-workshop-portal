@@ -5,6 +5,8 @@ const VOICE_ENABLED_KEY = 'autonateai-workshop-voice-enabled';
 const AUTO_ADVANCE_DELAY_MS = 3000;
 const ASSET_BASE = (import.meta.env.BASE_URL || '/').replace(/\/$/, '');
 const SWIPE_THRESHOLD_PX = 54;
+const MUSIC_BED_SRC = `${ASSET_BASE}/music/autonateai-portal-bed.mp3`;
+const MUSIC_BED_VOLUME = 0.09;
 let activeCleanup = null;
 
 function wrapAnimatedWords(element) {
@@ -142,6 +144,7 @@ export function initLectureDeck() {
   const toggle = document.querySelector('[data-voice-toggle]');
   const playbackButton = document.querySelector('[data-voice-playback]');
   const audio = new Audio();
+  const musicBed = new Audio(MUSIC_BED_SRC);
   const cleanups = [];
   let autoAdvanceTimer = 0;
   let voiceEnabled = window.localStorage.getItem(VOICE_ENABLED_KEY) === 'true';
@@ -151,6 +154,10 @@ export function initLectureDeck() {
     currentIndex = 0;
     slides[0]?.classList.add('is-active');
   }
+
+  musicBed.loop = true;
+  musicBed.volume = MUSIC_BED_VOLUME;
+  musicBed.preload = 'auto';
 
   function parseCuePoints(sequence) {
     return String(sequence?.dataset.cuePoints || '0')
@@ -355,9 +362,29 @@ export function initLectureDeck() {
     playbackButton.disabled = !hasVoice;
   }
 
+  function playMusicBed() {
+    if (!voiceEnabled) {
+      return;
+    }
+
+    musicBed.play().catch(() => {});
+  }
+
+  function pauseMusicBed(reset = false) {
+    musicBed.pause();
+    if (reset) {
+      musicBed.currentTime = 0;
+    }
+  }
+
   function stopAudio(reset = true) {
     window.clearTimeout(autoAdvanceTimer);
     audio.pause();
+    if (reset || !voiceEnabled) {
+      pauseMusicBed(reset);
+    } else {
+      pauseMusicBed(false);
+    }
     if (reset) {
       audio.currentTime = 0;
       playbackReady = false;
@@ -367,7 +394,8 @@ export function initLectureDeck() {
   }
 
   function playCurrent(index) {
-    stopAudio();
+    stopAudio(false);
+    playbackReady = false;
     applyPanMotion(slides[index], audio.duration || 0);
     if (!voiceEnabled) {
       setSlideWordState(slides[index], false, 0);
@@ -389,6 +417,7 @@ export function initLectureDeck() {
     resetStoryboard(slides[index]);
     setSlideWordState(slides[index], true, 0);
     updatePlaybackButton();
+    playMusicBed();
     audio.play().catch(() => {});
   }
 
@@ -405,6 +434,7 @@ export function initLectureDeck() {
 
     if (audio.paused) {
       window.clearTimeout(autoAdvanceTimer);
+      playMusicBed();
       audio.play().catch(() => {});
       updatePlaybackButton();
       return;
@@ -527,6 +557,7 @@ export function initLectureDeck() {
     audio.pause();
     audio.currentTime = 0;
     audio.src = '';
+    pauseMusicBed(true);
     cleanups.forEach((cleanup) => cleanup());
   };
 }
