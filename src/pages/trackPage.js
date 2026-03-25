@@ -27,10 +27,10 @@ export function renderTrackPage(trackId) {
 
         <section class="module-card sheet-menu-panel">
           <div class="card-topline">
-            <span class="status-pill">Prompt packs</span>
+            <span class="status-pill">Thinking Systems</span>
             <span class="count-pill">${track.workflows.length} templates</span>
           </div>
-          <h2 class="section-title">Open a sheet-specific workflow</h2>
+          <h2 class="section-title">Open the system you need right now</h2>
           <div class="sheet-button-grid">
             ${track.workflows
               .map(

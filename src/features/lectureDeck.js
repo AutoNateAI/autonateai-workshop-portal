@@ -32,6 +32,51 @@ export function initLectureDeck() {
     slides[0]?.classList.add('is-active');
   }
 
+  function setStoryboardFrame(slide, index) {
+    slide?.querySelectorAll('[data-storyboard-frame]').forEach((frame) => {
+      frame.classList.toggle('is-active', Number(frame.dataset.storyboardFrame) === index);
+    });
+
+    slide?.querySelectorAll('[data-storyboard-dot]').forEach((dot) => {
+      dot.classList.toggle('is-active', Number(dot.dataset.storyboardDot) === index);
+    });
+  }
+
+  function getStoryboardFrameIndex(sequence, progress) {
+    const cuePoints = String(sequence?.dataset.cuePoints || '0')
+      .split(',')
+      .map((value) => Number(value))
+      .filter((value) => !Number.isNaN(value));
+
+    let activeIndex = 0;
+    cuePoints.forEach((cuePoint, index) => {
+      if (progress >= cuePoint) {
+        activeIndex = index;
+      }
+    });
+
+    return activeIndex;
+  }
+
+  function updateStoryboardProgress(slide) {
+    const sequence = slide?.querySelector('[data-storyboard-sequence]');
+    if (!sequence) {
+      return;
+    }
+
+    const duration = audio.duration || 0;
+    const progress = duration > 0 ? audio.currentTime / duration : 0;
+    setStoryboardFrame(slide, getStoryboardFrameIndex(sequence, progress));
+  }
+
+  function resetStoryboard(slide) {
+    if (!slide?.querySelector('[data-storyboard-sequence]')) {
+      return;
+    }
+
+    setStoryboardFrame(slide, 0);
+  }
+
   function getClosestVisualIndex(carousel) {
     const cards = [...carousel.children];
     if (!cards.length) {
@@ -50,6 +95,11 @@ export function initLectureDeck() {
   function initVisualCarousel(slide) {
     const carousel = slide.querySelector('[data-visual-carousel]');
     if (!carousel) {
+      slide.querySelectorAll('[data-storyboard-dot]').forEach((dot) => {
+        dot.addEventListener('click', () => {
+          setStoryboardFrame(slide, Number(dot.dataset.storyboardDot));
+        });
+      });
       return;
     }
 
@@ -87,6 +137,7 @@ export function initLectureDeck() {
     window.clearTimeout(autoAdvanceTimer);
     audio.pause();
     audio.currentTime = 0;
+    resetStoryboard(slides[currentIndex]);
   }
 
   function playCurrent(index) {
@@ -104,6 +155,7 @@ export function initLectureDeck() {
     audio.src = '';
     audio.src = resolvedSrc;
     audio.load();
+    resetStoryboard(slides[index]);
     audio.play().catch(() => {});
   }
 
@@ -122,6 +174,7 @@ export function initLectureDeck() {
 
     deck.scrollTop = 0;
     slides[index].scrollTop = 0;
+    resetStoryboard(slides[index]);
     deck.closest('.lecture-card')?.scrollIntoView({
       block: 'start',
       behavior: 'smooth',
@@ -140,6 +193,14 @@ export function initLectureDeck() {
       currentIndex = (currentIndex + 1) % slides.length;
       show(currentIndex);
     }, AUTO_ADVANCE_DELAY_MS);
+  });
+
+  audio.addEventListener('loadedmetadata', () => {
+    updateStoryboardProgress(slides[currentIndex]);
+  });
+
+  audio.addEventListener('timeupdate', () => {
+    updateStoryboardProgress(slides[currentIndex]);
   });
 
   document.querySelectorAll('[data-slide-action]').forEach((button) => {

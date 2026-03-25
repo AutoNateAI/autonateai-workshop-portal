@@ -8,8 +8,18 @@
     "build": "vite build",
     "preview": "vite preview",
     "sheets:create": "node scripts/create-sheets.mjs",
+    "storyboards:build": "node scripts/build-student-storyboards.mjs",
     "voiceovers:manifest": "node scripts/build-voiceover-manifest.mjs",
-    "voiceovers:generate": "node scripts/precompute-voiceovers.mjs"
+    "voiceovers:generate": "node scripts/precompute-voiceovers.mjs",
+    "storyboards:generate:anchors": "python3 scripts/batch_generate_images.py --config config/storyboards/student-storyboard-anchors.json",
+    "storyboards:generate:scenes:01": "python3 scripts/batch_generate_images.py --config config/storyboards/student-storyboard-scenes-01.json",
+    "storyboards:generate:scenes:02": "python3 scripts/batch_generate_images.py --config config/storyboards/student-storyboard-scenes-02.json",
+    "storyboards:generate:scenes:03": "python3 scripts/batch_generate_images.py --config config/storyboards/student-storyboard-scenes-03.json",
+    "storyboards:generate:scenes:04": "python3 scripts/batch_generate_images.py --config config/storyboards/student-storyboard-scenes-04.json",
+    "storyboards:generate:scenes:05": "python3 scripts/batch_generate_images.py --config config/storyboards/student-storyboard-scenes-05.json",
+    "storyboards:generate:scenes:06": "python3 scripts/batch_generate_images.py --config config/storyboards/student-storyboard-scenes-06.json",
+    "storyboards:generate:scenes:07": "python3 scripts/batch_generate_images.py --config config/storyboards/student-storyboard-scenes-07.json",
+    "storyboards:generate:scenes:08": "python3 scripts/batch_generate_images.py --config config/storyboards/student-storyboard-scenes-08.json"
   },
   "dependencies": {
     "animejs": "^4.1.4",

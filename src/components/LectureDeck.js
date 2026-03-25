@@ -1,4 +1,7 @@
 import {getSlideNarration} from '../lib/voiceoverText.js';
+import {slideStoryboards} from '../data/slideStoryboards.js';
+
+const ASSET_BASE = (import.meta.env.BASE_URL || '/').replace(/\/$/, '');
 
 function renderGraphVisual(visual) {
   return `
@@ -97,6 +100,48 @@ function renderActivity(activity) {
   `;
 }
 
+function renderStoryboardRegion(storyboard) {
+  if (!storyboard?.frames?.length) {
+    return '';
+  }
+
+  return `
+    <div class="slide-visual-region slide-visual-region--storyboard">
+      <div class="slide-visual-topline">
+        <span class="slide-visual-hint">Narration frames</span>
+        <div class="slide-visual-dots" role="tablist" aria-label="Narration frames">
+          ${storyboard.frames
+            .map(
+              (_, index) => `
+                <button
+                  class="slide-visual-dot${index === 0 ? ' is-active' : ''}"
+                  type="button"
+                  data-storyboard-dot="${index}"
+                  aria-label="Go to frame ${index + 1}"
+                ></button>`,
+            )
+            .join('')}
+        </div>
+      </div>
+      <section class="slide-storyboard-card" data-storyboard-sequence data-cue-points="${storyboard.cuePoints.join(',')}">
+        ${storyboard.frames
+          .map(
+            (frame, index) => `
+              <img
+                class="slide-storyboard-frame${index === 0 ? ' is-active' : ''}"
+                src="${frame.src.startsWith('/') ? `${ASSET_BASE}${frame.src}` : frame.src}"
+                alt="${frame.alt}"
+                loading="lazy"
+                decoding="async"
+                data-storyboard-frame="${index}"
+              />`,
+          )
+          .join('')}
+      </section>
+    </div>
+  `;
+}
+
 function renderVisualRegion(visuals = []) {
   if (!visuals.length) {
     return '';
@@ -137,7 +182,7 @@ export function renderLectureDeck(track) {
   return `
     <section class="module-card lecture-card">
       <div class="card-topline">
-        <span class="status-pill">Lecture deck</span>
+        <span class="status-pill">Story deck</span>
         <div class="lecture-top-actions">
           <button class="btn btn-sm btn-outline-light lecture-voice-toggle" type="button" data-voice-toggle>
             Narration Off
@@ -148,19 +193,21 @@ export function renderLectureDeck(track) {
           <span class="count-pill">${track.lectureSlides.length} slides</span>
         </div>
       </div>
-      <h2 class="section-title">Mini lecture</h2>
+      <h2 class="section-title">Narrated cognitive upgrade</h2>
       <div id="lecture-deck" class="lecture-deck" data-track="${track.id}">
         ${track.lectureSlides
           .map(
-            (slide, index) => `
-              <article class="lecture-slide ${index === 0 ? 'is-active' : ''}" data-slide-index="${index}">
-                ${renderVisualRegion(slide.visuals)}
+            (slide, index) => {
+              const storyboard = slideStoryboards[track.id]?.[index] || null;
+              return `
+              <article class="lecture-slide ${slide.sectionBreak ? 'lecture-slide--section' : ''} ${index === 0 ? 'is-active' : ''}" data-slide-index="${index}">
+                ${slide.sectionBreak ? '' : storyboard ? renderStoryboardRegion(storyboard) : renderVisualRegion(slide.visuals)}
                 <div class="lecture-copy">
-                  <div class="slide-index">0${index + 1}</div>
-                  <div class="slide-eyebrow">${slide.eyebrow || 'Lecture'}</div>
+                  ${slide.sectionBreak ? '' : `<div class="slide-index">0${index + 1}</div>`}
+                  ${slide.eyebrow ? `<div class="slide-eyebrow">${slide.eyebrow}</div>` : ''}
                   <h3>${slide.title}</h3>
-                  <p class="slide-lead">${slide.lead || ''}</p>
-                  <p>${slide.body}</p>
+                  ${slide.lead ? `<p class="slide-lead">${slide.lead}</p>` : ''}
+                  ${slide.body ? `<p>${slide.body}</p>` : ''}
                   ${
                     slide.points?.length
                       ? `<ul class="slide-point-list">
@@ -174,7 +221,8 @@ export function renderLectureDeck(track) {
                     <div class="slide-transcript-copy">${getSlideNarration(track, slide, index)}</div>
                   </details>
                 </div>
-              </article>`,
+              </article>`;
+            },
           )
           .join('')}
       </div>

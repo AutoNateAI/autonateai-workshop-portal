@@ -19,7 +19,7 @@ export function renderWorkflowPage(slug) {
         <div class="workflow-stack">
           <section class="module-card workflow-sheet-card">
             <div class="card-topline">
-              <span class="status-pill">Sheet design</span>
+              <span class="status-pill">Thinking System</span>
               <span class="count-pill">${workflow.trackId}</span>
             </div>
             <h1 class="section-title">${workflow.name}</h1>
@@ -73,7 +73,7 @@ export function renderLockedWorkflowPage(trackId = 'course') {
             <span class="status-pill">Locked</span>
           </div>
           <h1 class="section-title">This workflow is not unlocked for your account.</h1>
-          <p class="dashboard-subtitle">You only see prompt packs from the course you bought. If you purchased this track with another email, sign out and use that paid email instead.</p>
+          <p class="dashboard-subtitle">You only see Thinking Systems from the course you bought. If you purchased this track with another email, sign out and use that paid email instead.</p>
           <div class="workflow-primary-actions mt-3">
             <a class="btn btn-primary" href="#/" data-nav="/">Back to dashboard</a>
             <a class="btn btn-outline-light" href="#/tracks/${trackId}" data-nav="/tracks/${trackId}">Back to track</a>

@@ -1,5 +1,8 @@
 function cleanText(text) {
-  return String(text || '').replace(/\s+/g, ' ').trim();
+  return String(text || '')
+    .replace(/\bMarques\b/g, 'Marcus')
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
 function joinSentences(parts) {
@@ -33,14 +36,15 @@ function activityNarration(activity) {
 }
 
 export function getSlideNarration(track, slide, index) {
-  const intro =
-    index === 0
-      ? `Welcome to the ${track.label} workshop.`
-      : `Slide ${index + 1}.`;
+  if (slide.narration) {
+    return cleanText(slide.narration);
+  }
+
+  if (slide.sectionBreak) {
+    return joinSentences([slide.title]);
+  }
 
   return joinSentences([
-    intro,
-    slide.eyebrow ? `${slide.eyebrow}.` : '',
     `${slide.title}.`,
     slide.lead,
     slide.body,

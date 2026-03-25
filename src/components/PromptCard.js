@@ -37,10 +37,10 @@ export function renderPromptCard(workflow) {
       <div class="prompt-pack-topline">
         <div>
           <div class="card-topline">
-            <span class="status-pill">Prompt pack</span>
+            <span class="status-pill">Thinking System</span>
             <span class="count-pill">${workflow.prompts.length} cards</span>
           </div>
-          <h2 class="section-title prompt-pack-heading">Fill it in, then copy it into ChatGPT</h2>
+          <h2 class="section-title prompt-pack-heading">Fill it in, then run the system in ChatGPT</h2>
         </div>
         <div class="prompt-carousel-controls">
           <button class="btn btn-sm btn-outline-light" type="button" data-prompt-nav="prev">Prev</button>
