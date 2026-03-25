@@ -1361,9 +1361,14 @@ textarea {
   }
 
   .slide-visual-region--storyboard .slide-storyboard-card {
-    aspect-ratio: 4 / 5;
-    min-height: clamp(360px, 96vw, 620px);
+    aspect-ratio: 16 / 9;
+    min-height: 0;
     height: auto;
+  }
+
+  .slide-visual-region--storyboard .slide-storyboard-frame {
+    object-fit: contain;
+    background: rgba(8, 16, 24, 0.96);
   }
 
   .slide-visual-region--storyboard .slide-visual-topline {
