@@ -293,6 +293,17 @@ textarea {
   gap: 1.35rem;
 }
 
+.workflow-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(280px, 1fr);
+  gap: 1.35rem;
+  align-items: start;
+}
+
+.workflow-sheet-details {
+  display: none;
+}
+
 .setup-stack {
   display: grid;
   gap: 1rem;
@@ -401,7 +412,7 @@ textarea {
 .lecture-slide {
   display: none;
   min-height: 100%;
-  grid-template-columns: minmax(0, 1.05fr) minmax(280px, 0.95fr);
+  grid-template-columns: minmax(0, 1.18fr) minmax(260px, 0.82fr);
   gap: 0.9rem;
   align-items: start;
   overflow: auto;
@@ -480,6 +491,10 @@ textarea {
   display: grid;
   align-content: start;
   gap: 0.7rem;
+  max-height: clamp(420px, 72vh, 640px);
+  overflow-y: auto;
+  padding-right: 0.25rem;
+  overscroll-behavior: contain;
 }
 
 .slide-eyebrow {
@@ -494,6 +509,50 @@ textarea {
   font-size: 1.12rem;
   color: var(--accent-soft);
   line-height: 1.5;
+}
+
+.story-caption-list {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.story-caption {
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.75rem;
+  align-items: start;
+  padding: 0.8rem 0.9rem;
+  border: 1px solid rgba(168, 187, 205, 0.12);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.025);
+  color: var(--muted);
+  text-align: left;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    color 180ms ease,
+    transform 180ms ease;
+}
+
+.story-caption:hover {
+  border-color: rgba(125, 211, 199, 0.18);
+  color: #d6e4f1;
+}
+
+.story-caption.is-active {
+  border-color: rgba(125, 211, 199, 0.28);
+  background: linear-gradient(135deg, rgba(125, 211, 199, 0.12), rgba(239, 131, 84, 0.08));
+  color: #e9fff8;
+  transform: translateY(-1px);
+}
+
+.story-caption-index {
+  color: rgba(125, 211, 199, 0.7);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
 }
 
 .lecture-copy p,
@@ -552,6 +611,21 @@ textarea {
 
 .slide-activity-list li {
   line-height: 1.5;
+}
+
+.narration-word {
+  display: inline-block;
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+  filter: blur(0);
+}
+
+.lecture-slide.is-narrating .narration-word {
+  opacity: 0;
+  transform: translate3d(0, 14px, 0) scale(0.96);
+  filter: blur(7px);
+  animation: narrationWordIn 540ms cubic-bezier(0.2, 0.84, 0.2, 1) forwards;
+  animation-delay: var(--word-delay, 0ms);
 }
 
 .slide-transcript {
@@ -617,7 +691,7 @@ textarea {
   width: 100%;
   max-width: 100%;
   min-width: 0;
-  aspect-ratio: 19 / 6;
+  aspect-ratio: 16 / 9;
   border: 1px solid var(--line);
   border-radius: 24px;
   background: rgba(8, 16, 24, 0.9);
@@ -640,23 +714,23 @@ textarea {
   height: 100%;
   object-fit: cover;
   opacity: 0;
-  transform: scale(1.02);
+  transform: translate3d(0, 0, 0) scale(1.04);
   transition:
     opacity 380ms ease,
     transform 600ms ease;
+  transform-origin: center center;
 }
 
 .slide-storyboard-frame.is-active {
   opacity: 1;
-  transform: scale(1);
+  animation: slideNarrationPan var(--narration-pan-duration, 7s) ease-in-out forwards;
 }
 
 .slide-visual-region--storyboard {
   width: 100%;
   max-width: 100%;
   min-width: 0;
-  height: 100%;
-  align-self: stretch;
+  align-self: start;
 }
 
 .slide-visual-region--storyboard .slide-visual-topline {
@@ -672,9 +746,9 @@ textarea {
 }
 
 .slide-visual-region--storyboard .slide-storyboard-card {
-  height: 100%;
-  min-height: 100%;
-  aspect-ratio: auto;
+  height: auto;
+  min-height: 0;
+  aspect-ratio: 16 / 9;
 }
 
 @media (min-width: 768px) {
@@ -693,8 +767,8 @@ textarea {
 
 @media (min-width: 992px) {
   .lecture-slide {
-    grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
-    align-items: stretch;
+    grid-template-columns: minmax(0, 1.22fr) minmax(280px, 0.78fr);
+    align-items: start;
   }
 
   .lecture-slide h3 {
@@ -1146,6 +1220,83 @@ textarea {
   padding: 1rem;
 }
 
+.workflow-sheet-card--desktop {
+  position: sticky;
+  top: 92px;
+  height: clamp(540px, calc(100vh - 120px), 760px);
+  max-height: clamp(540px, calc(100vh - 120px), 760px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.workflow-sheet-card--desktop .section-title {
+  font-size: clamp(1.4rem, 1.8vw, 2rem);
+}
+
+.workflow-sheet-card--desktop .dashboard-subtitle,
+.workflow-sheet-card--desktop .section-copy,
+.workflow-sheet-card--desktop .sheet-value {
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.workflow-sheet-card--desktop .workflow-primary-actions {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.workflow-sheet-card--desktop .workflow-primary-actions .btn {
+  width: 100%;
+}
+
+.workflow-sheet-card--desktop .sheet-meta-grid {
+  grid-template-columns: 1fr;
+}
+
+.workflow-sheet-details summary {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.workflow-sheet-details summary::-webkit-details-marker {
+  display: none;
+}
+
+.workflow-sheet-summary-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 74px;
+  padding: 0.45rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid rgba(125, 211, 199, 0.22);
+  color: var(--accent-cool);
+  background: rgba(125, 211, 199, 0.08);
+  font-size: 0.84rem;
+}
+
+.workflow-sheet-details[open] .workflow-sheet-summary-action {
+  color: var(--accent-soft);
+  border-color: rgba(239, 131, 84, 0.24);
+  background: rgba(239, 131, 84, 0.08);
+}
+
+.workflow-sheet-details-body {
+  padding-top: 1rem;
+}
+
+.workflow-sheet-card--mobile {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
 .sheet-value {
   font-weight: 700;
   margin-top: 0.35rem;
@@ -1469,6 +1620,19 @@ textarea {
     align-items: stretch;
   }
 
+  .workflow-stage {
+    grid-template-columns: 1fr;
+  }
+
+  .workflow-sheet-card--desktop {
+    display: none;
+  }
+
+  .workflow-sheet-details {
+    display: grid;
+    gap: 0.8rem;
+  }
+
   .prompt-carousel-controls {
     justify-content: space-between;
   }
@@ -1478,6 +1642,7 @@ textarea {
     min-height: 0;
     max-height: none;
     overflow: visible;
+    gap: 0.8rem;
   }
 
   .prompt-pack {
@@ -1487,12 +1652,14 @@ textarea {
   .prompt-block {
     height: auto;
     min-height: 0;
+    padding: 0.8rem;
   }
 
   .prompt-template {
     height: auto;
     max-height: none;
     overflow: visible;
+    padding: 0.8rem;
   }
 
   .prompt-block-head {
@@ -1587,5 +1754,73 @@ textarea {
     display: grid;
     gap: 0.45rem;
     line-height: 1.5;
+  }
+
+  .section-title.prompt-pack-heading,
+  .workflow-sheet-details .section-title,
+  .workflow-sheet-card--mobile .section-title {
+    font-size: clamp(1.2rem, 6vw, 1.55rem);
+  }
+
+  .prompt-block h3 {
+    font-size: 0.95rem;
+  }
+
+  .prompt-text,
+  .story-caption,
+  .workflow-sheet-card--mobile .dashboard-subtitle,
+  .workflow-sheet-card--mobile .section-copy,
+  .workflow-sheet-card--mobile .sheet-value {
+    font-size: 0.9rem;
+    line-height: 1.45;
+  }
+
+  .workflow-sheet-details {
+    padding: 0.85rem;
+  }
+
+  .workflow-sheet-details summary {
+    gap: 0.75rem;
+  }
+
+  .workflow-sheet-summary-action {
+    min-width: 64px;
+    padding: 0.35rem 0.65rem;
+    font-size: 0.78rem;
+  }
+
+  .story-caption {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+    padding: 0.7rem 0.75rem;
+    border-radius: 16px;
+  }
+
+  .prompt-carousel-controls .btn,
+  .workflow-sheet-card--mobile .workflow-primary-actions .btn {
+    min-height: 44px;
+    font-size: 0.82rem;
+  }
+}
+
+@keyframes narrationWordIn {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0) scale(0.96);
+    filter: blur(7px);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes slideNarrationPan {
+  0% {
+    transform: translate3d(var(--pan-x-from, -2%), var(--pan-y-from, -1%), 0) scale(1.04);
+  }
+  100% {
+    transform: translate3d(var(--pan-x-to, 2%), var(--pan-y-to, 1%), 0) scale(1.12);
   }
 }

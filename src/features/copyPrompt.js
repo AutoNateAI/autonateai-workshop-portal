@@ -1,5 +1,7 @@
 import {copyText} from '../lib/copy.js';
 
+const SWIPE_THRESHOLD_PX = 54;
+
 function autosizeTextarea(field) {
   field.style.height = 'auto';
   field.style.height = `${field.scrollHeight}px`;
@@ -83,12 +85,16 @@ function initPromptCarousel(card) {
     return;
   }
 
+  const moveBy = (offset) => {
+    scrollToSlide(carousel, currentSlideIndex(carousel) + offset);
+  };
+
   card.querySelector('[data-prompt-nav="prev"]')?.addEventListener('click', () => {
-    scrollToSlide(carousel, currentSlideIndex(carousel) - 1);
+    moveBy(-1);
   });
 
   card.querySelector('[data-prompt-nav="next"]')?.addEventListener('click', () => {
-    scrollToSlide(carousel, currentSlideIndex(carousel) + 1);
+    moveBy(1);
   });
 
   card.querySelectorAll('[data-prompt-dot]').forEach((dot) => {
@@ -104,6 +110,40 @@ function initPromptCarousel(card) {
       updateCarousel(card, currentSlideIndex(carousel));
     }, 60);
   });
+
+  let touchStartX = 0;
+  let touchStartY = 0;
+  carousel.addEventListener(
+    'touchstart',
+    (event) => {
+      const touch = event.touches?.[0];
+      if (!touch) {
+        return;
+      }
+      touchStartX = touch.clientX;
+      touchStartY = touch.clientY;
+    },
+    {passive: true},
+  );
+
+  carousel.addEventListener(
+    'touchend',
+    (event) => {
+      const touch = event.changedTouches?.[0];
+      if (!touch) {
+        return;
+      }
+
+      const deltaX = touch.clientX - touchStartX;
+      const deltaY = touch.clientY - touchStartY;
+      if (Math.abs(deltaX) < SWIPE_THRESHOLD_PX || Math.abs(deltaX) <= Math.abs(deltaY)) {
+        return;
+      }
+
+      moveBy(deltaX < 0 ? 1 : -1);
+    },
+    {passive: true},
+  );
 
   updateCarousel(card, 0);
 }

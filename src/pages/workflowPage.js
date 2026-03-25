@@ -2,6 +2,67 @@ import {workflowIndex} from '../data/workflows.js';
 import {renderPromptCard} from '../components/PromptCard.js';
 import {initCopyPrompt} from '../features/copyPrompt.js';
 
+function renderSheetCard(workflow, extraClass = '') {
+  return `
+    <section class="module-card workflow-sheet-card ${extraClass}">
+      <div class="card-topline">
+        <span class="status-pill">Thinking System</span>
+        <span class="count-pill">${workflow.trackId}</span>
+      </div>
+      <h1 class="section-title">${workflow.name}</h1>
+      <p class="dashboard-subtitle">${workflow.summary}</p>
+      ${
+        workflow.sheet.copyUrl
+          ? `<div class="workflow-primary-actions mt-3">
+              <a class="btn btn-primary" href="${workflow.sheet.copyUrl}" target="_blank" rel="noopener noreferrer">Copy this sheet</a>
+              <a class="btn btn-outline-light" href="${workflow.sheet.templateUrl}" target="_blank" rel="noopener noreferrer">Preview template</a>
+            </div>`
+          : ''
+      }
+      <div class="sheet-meta-grid mt-3">
+        <div class="sheet-panel">
+          <div class="sheet-label">Sheet</div>
+          <div class="sheet-value">${workflow.sheet.title}</div>
+        </div>
+        <div class="sheet-panel">
+          <div class="sheet-label">Best use</div>
+          <div class="sheet-value">${workflow.useCase}</div>
+        </div>
+      </div>
+      <p class="section-copy mt-3">${workflow.sheet.purpose}</p>
+      <div class="sheet-outcome-card">
+        <div class="kicker">Outcome</div>
+        <strong>${workflow.sheet.outcome}</strong>
+      </div>
+      <div class="column-grid mt-3">
+        ${workflow.sheet.columns
+          .map(
+            (column) => `
+              <div class="column-pill">${column}</div>`,
+          )
+          .join('')}
+      </div>
+    </section>
+  `;
+}
+
+function renderMobileSheetPanel(workflow) {
+  return `
+    <details class="module-card workflow-sheet-details">
+      <summary>
+        <div>
+          <div class="sheet-label">Thinking System Sheet</div>
+          <strong>${workflow.sheet.title}</strong>
+        </div>
+        <span class="workflow-sheet-summary-action">Open</span>
+      </summary>
+      <div class="workflow-sheet-details-body">
+        ${renderSheetCard(workflow, 'workflow-sheet-card--mobile')}
+      </div>
+    </details>
+  `;
+}
+
 export function renderWorkflowPage(slug) {
   const workflow = workflowIndex[slug];
   if (!workflow) {
@@ -16,47 +77,12 @@ export function renderWorkflowPage(slug) {
     <section class="dashboard-page">
       <div class="container-xl">
         <a class="back-link" href="#/tracks/${workflow.trackId}" data-nav="/tracks/${workflow.trackId}">Back to ${workflow.trackId} dashboard</a>
-        <div class="workflow-stack">
-          <section class="module-card workflow-sheet-card">
-            <div class="card-topline">
-              <span class="status-pill">Thinking System</span>
-              <span class="count-pill">${workflow.trackId}</span>
-            </div>
-            <h1 class="section-title">${workflow.name}</h1>
-            <p class="dashboard-subtitle">${workflow.summary}</p>
-            ${
-              workflow.sheet.copyUrl
-                ? `<div class="workflow-primary-actions mt-3">
-                    <a class="btn btn-primary" href="${workflow.sheet.copyUrl}" target="_blank" rel="noopener noreferrer">Copy this sheet</a>
-                    <a class="btn btn-outline-light" href="${workflow.sheet.templateUrl}" target="_blank" rel="noopener noreferrer">Preview template</a>
-                  </div>`
-                : ''
-            }
-            <div class="sheet-meta-grid mt-3">
-              <div class="sheet-panel">
-                <div class="sheet-label">Sheet</div>
-                <div class="sheet-value">${workflow.sheet.title}</div>
-              </div>
-              <div class="sheet-panel">
-                <div class="sheet-label">Best use</div>
-                <div class="sheet-value">${workflow.useCase}</div>
-              </div>
-            </div>
-            <p class="section-copy mt-3">${workflow.sheet.purpose}</p>
-            <div class="sheet-outcome-card">
-              <div class="kicker">Outcome</div>
-              <strong>${workflow.sheet.outcome}</strong>
-            </div>
-            <div class="column-grid mt-3">
-              ${workflow.sheet.columns
-                .map(
-                  (column) => `
-                    <div class="column-pill">${column}</div>`,
-                )
-                .join('')}
-            </div>
-          </section>
+        <div class="workflow-stack workflow-stack--mobile-sheet">
+          ${renderMobileSheetPanel(workflow)}
+        </div>
+        <div class="workflow-stage">
           ${renderPromptCard(workflow)}
+          ${renderSheetCard(workflow, 'workflow-sheet-card--desktop')}
         </div>
       </div>
     </section>

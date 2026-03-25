@@ -3,6 +3,20 @@ import {slideStoryboards} from '../data/slideStoryboards.js';
 
 const ASSET_BASE = (import.meta.env.BASE_URL || '/').replace(/\/$/, '');
 
+function cleanStoryboardCaption(text, slideTitle = '') {
+  let caption = String(text || '')
+    .replace(/\s*\([A-Z] frame\)\s*$/i, '')
+    .replace(/\.\./g, '.')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  if (slideTitle && caption.toLowerCase().startsWith(`${slideTitle.toLowerCase()}.`)) {
+    caption = caption.slice(slideTitle.length + 1).trim();
+  }
+
+  return caption;
+}
+
 function renderGraphVisual(visual) {
   return `
     <section class="slide-visual-card">
@@ -142,6 +156,32 @@ function renderStoryboardRegion(storyboard) {
   `;
 }
 
+function renderStoryboardCaptions(slide, storyboard) {
+  if (!storyboard?.frames?.length) {
+    return '';
+  }
+
+  return `
+    <div class="story-caption-list" data-story-caption-list>
+      ${storyboard.frames
+        .map((frame, index) => {
+          const caption = cleanStoryboardCaption(frame.alt, slide.title);
+          return `
+            <button
+              class="story-caption${index === 0 ? ' is-active' : ''}"
+              type="button"
+              data-story-caption="${index}"
+            >
+              <span class="story-caption-index">${String(index + 1).padStart(2, '0')}</span>
+              <span>${caption}</span>
+            </button>
+          `;
+        })
+        .join('')}
+    </div>
+  `;
+}
+
 function renderVisualRegion(visuals = []) {
   if (!visuals.length) {
     return '';
@@ -187,8 +227,8 @@ export function renderLectureDeck(track) {
           <button class="btn btn-sm btn-outline-light lecture-voice-toggle" type="button" data-voice-toggle>
             Narration Off
           </button>
-          <button class="btn btn-sm btn-outline-light lecture-voice-stop" type="button" data-voice-stop>
-            Stop
+          <button class="btn btn-sm btn-outline-light lecture-voice-stop" type="button" data-voice-playback>
+            Play
           </button>
           <span class="count-pill">${track.lectureSlides.length} slides</span>
         </div>
@@ -206,14 +246,20 @@ export function renderLectureDeck(track) {
                   ${slide.sectionBreak ? '' : `<div class="slide-index">0${index + 1}</div>`}
                   ${slide.eyebrow ? `<div class="slide-eyebrow">${slide.eyebrow}</div>` : ''}
                   <h3>${slide.title}</h3>
-                  ${slide.lead ? `<p class="slide-lead">${slide.lead}</p>` : ''}
-                  ${slide.body ? `<p>${slide.body}</p>` : ''}
                   ${
-                    slide.points?.length
-                      ? `<ul class="slide-point-list">
-                          ${slide.points.map((point) => `<li>${point}</li>`).join('')}
-                        </ul>`
-                      : ''
+                    storyboard
+                      ? renderStoryboardCaptions(slide, storyboard)
+                      : `
+                        ${slide.lead ? `<p class="slide-lead">${slide.lead}</p>` : ''}
+                        ${slide.body ? `<p>${slide.body}</p>` : ''}
+                        ${
+                          slide.points?.length
+                            ? `<ul class="slide-point-list">
+                                ${slide.points.map((point) => `<li>${point}</li>`).join('')}
+                              </ul>`
+                            : ''
+                        }
+                      `
                   }
                   ${renderActivity(slide.activity)}
                   <details class="slide-transcript">
