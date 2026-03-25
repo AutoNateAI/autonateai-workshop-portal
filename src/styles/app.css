@@ -1368,7 +1368,16 @@ textarea {
 
   .slide-visual-region--storyboard .slide-storyboard-frame {
     object-fit: contain;
-    background: rgba(8, 16, 24, 0.96);
+    object-position: top center;
+    background: transparent;
+  }
+
+  .slide-visual-region--storyboard .slide-storyboard-card {
+    background: linear-gradient(180deg, rgba(11, 18, 27, 0.35), rgba(11, 18, 27, 0.12));
+  }
+
+  .slide-visual-region--storyboard .slide-storyboard-card::after {
+    background: linear-gradient(180deg, rgba(6, 12, 18, 0.04), rgba(6, 12, 18, 0.12));
   }
 
   .slide-visual-region--storyboard .slide-visual-topline {
