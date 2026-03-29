@@ -35,6 +35,7 @@ Pushes to `main` trigger `.github/workflows/deploy-gh-pages.yml`, which publishe
 - `src/features`: feature-specific UI orchestration
 - `src/lib`: utilities, router, Firebase bootstrap
 - `src/styles`: theme and layout styles
+- `docs`: internal operating docs and planning references
 
 ## Product shape
 
@@ -49,3 +50,7 @@ Initial tracks:
 
 - AI-First Student
 - AI-First Researcher
+
+## Docs
+
+- `docs/promo-video-operating-system.md`: plan for deriving promo videos from workshop content and managing production data in Google Sheets
