@@ -184,7 +184,7 @@ render();
 function deriveAllowedTrackIds(library = []) {
   const trackIds = new Set();
   for (const entry of library) {
-    if (entry.productId === 'ai-first-student') {
+    if (entry.productId === 'ai-first-student' || entry.productId === 'agentic-ai-workshop-apr-11-2026') {
       trackIds.add('student');
     }
     if (entry.productId === 'ai-first-researcher') {
@@ -196,10 +196,7 @@ function deriveAllowedTrackIds(library = []) {
 
 function renderWorkflowForPath(slug) {
   const workflowHtml = renderWorkflowPage(slug);
-  const workflowTrackId = slug.includes('source') || slug.includes('claim') || slug.includes('theme') || slug.includes('gap') || slug.includes('lit-review') || slug.includes('research-narrative')
-    ? 'researcher'
-    : null;
-  const inferredTrackId = workflowTrackId ?? inferTrackIdFromSlug(slug);
+  const inferredTrackId = inferTrackIdFromSlug(slug);
   if (inferredTrackId && !authState.allowedTrackIds.includes(inferredTrackId)) {
     return renderLockedWorkflowPage(inferredTrackId);
   }

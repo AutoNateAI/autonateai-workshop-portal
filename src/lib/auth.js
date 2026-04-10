@@ -15,7 +15,11 @@ const claimAccessUrl =
   'https://claimportalaccessbyemail-4qinfaeidq-uc.a.run.app';
 const completePasswordSetupUrl =
   'https://completeportalpasswordsetup-4qinfaeidq-uc.a.run.app';
-const allowedCourseProductIds = new Set(['ai-first-student', 'ai-first-researcher']);
+const allowedCourseProductIds = new Set([
+  'ai-first-student',
+  'agentic-ai-workshop-apr-11-2026',
+  'ai-first-researcher',
+]);
 
 export function observeAuthState(callback) {
   const {auth} = getFirebaseServices();
