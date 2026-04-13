@@ -184,7 +184,7 @@ render();
 function deriveAllowedTrackIds(library = []) {
   const trackIds = new Set();
   for (const entry of library) {
-    if (entry.productId === 'ai-first-student' || entry.productId === 'agentic-ai-workshop-apr-11-2026') {
+    if (entry.productId === 'ai-first-student' || entry.productId === 'agentic-ai-workshop-apr-18-2026') {
       trackIds.add('student');
     }
     if (entry.productId === 'ai-first-researcher') {
